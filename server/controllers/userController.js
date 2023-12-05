@@ -66,7 +66,9 @@ module.exports.login = async (req, res) => {
         })
 
         userFound
-            ? res.status(200).send({ userId: userFound.userId, firstName: userFound.firstName, middleName: userFound.middleName, lastName: userFound.lastName })
+            ? userFound.userStatus === 1
+                ? res.status(200).send({ userId: userFound.userId, firstName: userFound.firstName, middleName: userFound.middleName, lastName: userFound.lastName })
+                : res.status(403).send({ clientMessage: 'Usuário bloqueado' })
             : res.status(404).send({ clientMessage: 'Usuário não encontrado' })
 
     } catch (e) {
