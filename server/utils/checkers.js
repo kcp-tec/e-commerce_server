@@ -7,5 +7,5 @@ module.exports.emailCheck = email => {
 }
 
 module.exports.passwordCheck = password => {
-    return /[A-Z]/.test(password) && /[!@#$%^&*_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password) && password.length < 8
+    return /[A-Z]/.test(password) && /[!@#$%^&*_+\-=\[\]{};':"\\|,.<>\/?]+/.test(password) && password.length >= 8
 }

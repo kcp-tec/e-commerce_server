@@ -1,19 +1,18 @@
 const { PrismaClient } = require('@prisma/client')
 const uuid = require('uuid')
-
 const prisma = new PrismaClient()
-
 const checkers = require('../utils/checkers')
 
 module.exports.insertUser = async (req, res) => {
-    const insertValidation = validateInsert({
+    const userData = {
         firstName: req.body.firstName,
         middleName: req.body.middleName,
         lastName: req.body.lastName,
         email: req.body.email,
         password: req.body.password
-    })
+    }
 
+    const insertValidation = validateInsert(userData)
     if (insertValidation.status !== 200) {
         return res.status(insertValidation.status).send({
             clientMessage: insertValidation.clientMessage,
