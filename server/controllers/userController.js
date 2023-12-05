@@ -84,6 +84,8 @@ module.exports.blockUser = async (req, res) => {
             }
         })
 
+        if (!userFound) return res.status(404).send({ clientMessage: 'Usuário não encontrado' })
+
         const userBlocked = await prisma.user.update({
             where: {
                 userId: req.body.userId
