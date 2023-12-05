@@ -13,7 +13,7 @@ module.exports.insertUser = async (req, res) => {
     }
 
     const insertValidation = validateInsert(userData)
-    if (insertValidation.status !== 200) {
+    if (!insertValidation.ok) {
         return res.status(insertValidation.status).send({
             clientMessage: insertValidation.clientMessage,
             serverMessage: 'Credenciais de cadastro incorretas'
@@ -39,15 +39,36 @@ module.exports.insertUser = async (req, res) => {
     }
 }
 
-module.exports.findUser = async (req, res) => {
+module.exports.findUserById = async (req, res) => {
     try {
         const userFound = await prisma.user.findUnique({
             where: {
-                userId: Number(req.params.userId)
+                userId: req.params.userId
             }
         })
 
         res.status(200).send(userFound.firstName)
+    } catch (e) {
+        const errorMessage = getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
+module.exports.login = async (req, res) => {
+    try {
+        const userFound = await prisma.user.findFirst({
+            where: {
+                AND: [
+                    { email: req.body.email },
+                    { password: req.body.password }
+                ]
+            }
+        })
+
+        userFound
+            ? res.status(200).send({ userId: userFound.userId, firstName: userFound.firstName, middleName: userFound.middleName, lastName: userFound.lastName })
+            : res.status(404).send({ clientMessage: 'Usuário não encontrado' })
+
     } catch (e) {
         const errorMessage = getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
@@ -91,6 +112,7 @@ const validateInsert = userData => {
     }
 
     return {
-        status: 200
+        status: 200,
+        ok: true
     }
 }
