@@ -70,7 +70,30 @@ module.exports.login = async (req, res) => {
                 ? res.status(200).send({ userId: userFound.userId, firstName: userFound.firstName, middleName: userFound.middleName, lastName: userFound.lastName })
                 : res.status(403).send({ clientMessage: 'Usuário bloqueado' })
             : res.status(404).send({ clientMessage: 'Usuário não encontrado' })
+    } catch (e) {
+        const errorMessage = getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
 
+module.exports.blockUser = async (req, res) => {
+    try {
+        const userFound = await prisma.user.findUnique({
+            where: {
+                userId: req.body.userId
+            }
+        })
+
+        const userBlocked = await prisma.user.update({
+            where: {
+                userId: req.body.userId
+            },
+            data: {
+                userStatus: userFound.userStatus === 1 ? 0 : 1
+            }
+        })
+
+        res.status(200).send({ clientMessage: `Usuário ${userBlocked.firstName} ${userBlocked.userStatus == 1 ? 'desbloqueado' : 'bloqueado'}` })
     } catch (e) {
         const errorMessage = getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
