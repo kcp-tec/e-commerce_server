@@ -48,7 +48,10 @@ module.exports.findUserById = async (req, res) => {
             }
         })
 
-        res.status(200).send(userFound.firstName)
+        res.status(200).send({
+            Nome: userFound.firstName, 
+            Id: userFound.userId
+        })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })

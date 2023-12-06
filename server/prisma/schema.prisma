@@ -25,6 +25,7 @@ model Product {
   description String?
   price       Decimal @db.Decimal(9, 2)
   picture     String?
+  amount      Int? @default(0)
   carts       Cart[]
 }
 
