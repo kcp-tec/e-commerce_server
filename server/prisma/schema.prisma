@@ -21,7 +21,7 @@ model User {
 model Product {
   productId   String  @id
   name        String
-  productCategory String
+  category    String
   description String?
   price       Decimal @db.Decimal(9, 2)
   picture     String?
@@ -31,8 +31,8 @@ model Product {
 model Cart {
   cartId String   @id
   date   DateTime @default(now())
-  amount Int 
-  
+  amount Int
+
   Product          Product? @relation(fields: [productProductId], references: [productId])
   productProductId String?
   User             User?    @relation(fields: [userUserId], references: [userId])
