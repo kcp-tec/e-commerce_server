@@ -35,7 +35,7 @@ module.exports.insertUser = async (req, res) => {
 
         res.status(200).send({ clientMessage: `Usuário ${newUser.firstName} ${newUser.middleName} ${newUser.lastName} cadastrado` })
     } catch (e) {
-        const errorMessage = getErrorMessageAndStatus(e)
+        const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
 }
@@ -50,7 +50,7 @@ module.exports.findUserById = async (req, res) => {
 
         res.status(200).send(userFound.firstName)
     } catch (e) {
-        const errorMessage = getErrorMessageAndStatus(e)
+        const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
 }
@@ -98,7 +98,7 @@ module.exports.blockUser = async (req, res) => {
 
         res.status(200).send({ clientMessage: `Usuário ${userBlocked.firstName} ${userBlocked.userStatus == 1 ? 'desbloqueado' : 'bloqueado'}` })
     } catch (e) {
-        const errorMessage = getErrorMessageAndStatus(e)
+        const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
 }
