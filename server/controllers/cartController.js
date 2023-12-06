@@ -6,7 +6,7 @@ const errors = require('../utils/errors')
 
 module.exports.insertCart = async (req, res) => {
     try {
-        prisma.cart.create({
+        const newCart = await prisma.cart.create({
             data: {
                 cartId: uuid.v4(),
                 amount: req.body.amount,
@@ -14,6 +14,8 @@ module.exports.insertCart = async (req, res) => {
                 userUserId: req.body.userId
             }
         })
+
+        res.status(200).send({ clientMessage: 'Carrinho cadastrado' })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
