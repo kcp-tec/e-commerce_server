@@ -32,7 +32,7 @@ module.exports.insertUser = async (req, res) => {
             }
         })
 
-        res.status(200).send(newUser.userId)
+        res.status(200).send({ clientMessage: `Usuário ${newUser.firstName} ${newUser.middleName} ${newUser.lastName} cadastrado` })
     } catch (e) {
         const errorMessage = getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
