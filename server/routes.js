@@ -12,4 +12,5 @@ router.put('/blockUser', (req, res) => userController.blockUser(req, res))
 // Products
 router.post('/insertProduct', (req, res) => productController.insertProduct(req, res))
 
+
 module.exports = router
