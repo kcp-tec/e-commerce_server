@@ -1,5 +1,6 @@
 const userController = require('./controllers/userController')
 const productController = require('./controllers/productController')
+const cartController = require('./controllers/cartController')
 const express = require('express')
 const router = express.Router()
 
@@ -12,5 +13,5 @@ router.put('/blockUser', (req, res) => userController.blockUser(req, res))
 // Products
 router.post('/insertProduct', (req, res) => productController.insertProduct(req, res))
 
-
+router.post('/insertCart', (req, res) => cartController.insertCart(req, res))
 module.exports = router
