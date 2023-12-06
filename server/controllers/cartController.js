@@ -4,5 +4,9 @@ const prisma = new PrismaClient()
 const checkers = require('../utils/checkers')
 
 module.exports.insertCart = async (req, res) => {
-    
+    try {
+
+    } catch (e) {
+
+    }
 }

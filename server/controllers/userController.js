@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client')
 const uuid = require('uuid')
 const prisma = new PrismaClient()
 const checkers = require('../utils/checkers')
+const errors = require('../utils/errors')
 
 module.exports.insertUser = async (req, res) => {
     const userData = {
@@ -71,7 +72,7 @@ module.exports.login = async (req, res) => {
                 : res.status(403).send({ clientMessage: 'Usuário bloqueado' })
             : res.status(404).send({ clientMessage: 'Usuário não encontrado' })
     } catch (e) {
-        const errorMessage = getErrorMessageAndStatus(e)
+        const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
 }
@@ -99,20 +100,6 @@ module.exports.blockUser = async (req, res) => {
     } catch (e) {
         const errorMessage = getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
-    }
-}
-
-const getErrorMessageAndStatus = e => {
-    if (e.code == 'P2002') {
-        return {
-            status: 409,
-            clientMessage: `Registro ${e.meta.target} duplicado`
-        }
-    }
-
-    return {
-        status: 500,
-        clientMessage: `Erro de servidor: ${e}`
     }
 }
 
