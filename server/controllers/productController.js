@@ -7,6 +7,7 @@ module.exports.insertProduct = async (req, res) => {
     const productData = {
         productId: uuid.v4(),
         name: req.body.name,
+        category: req.body.category,
         description: req.body.description || null,
         price: req.body.price,
         picture: req.body.picture || null
@@ -16,6 +17,7 @@ module.exports.insertProduct = async (req, res) => {
         data: {
             productId: uuid.v4(),
             name: productData.name,
+            category: productData.category,
             description: productData.description,
             price: productData.price,
             picture: productData.picture

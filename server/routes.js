@@ -13,5 +13,6 @@ router.put('/blockUser', (req, res) => userController.blockUser(req, res))
 // Products
 router.post('/insertProduct', (req, res) => productController.insertProduct(req, res))
 
+// Carts
 router.post('/insertCart', (req, res) => cartController.insertCart(req, res))
 module.exports = router
