@@ -15,4 +15,5 @@ router.post('/insertProduct', (req, res) => productController.insertProduct(req,
 
 // Carts
 router.post('/insertCart', (req, res) => cartController.insertCart(req, res))
+router.get('/findCartsByUser/:userId', (req, res) => cartController.findCartsByUser(req, res))
 module.exports = router
