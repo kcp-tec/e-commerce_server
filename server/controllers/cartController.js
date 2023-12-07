@@ -39,7 +39,7 @@ module.exports.insertProductToCart = async (req, res) => {
 
 module.exports.findCartByUser = async (req, res) => {
     try {
-        const cartsFound = await prisma.cart.findMany({
+        const cartsFound = await prisma.cart.findUnique({
             where: {
                 userId: req.params.userId
             }
@@ -90,7 +90,9 @@ const attCartTotalValue = async (cartId, product) => {
                 cartId: cartId
             },
             data: {
-                totalValue: (product.amount * product.price)
+                totalValue: {
+                    increment: (product.amount * product.price)
+                }
             }
         })
     } catch (e) {

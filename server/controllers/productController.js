@@ -4,7 +4,33 @@ const prisma = new PrismaClient()
 const checkers = require('../utils/checkers')
 const errors = require('../utils/errors')
 
-module.exports.insertProduct = async (req, res) => {
+module.exports.insertProduct= async (req, res) => {
+    const productData = {
+        productName: req.body.productName,
+        amountAdded: req.body.amountAdded
+    }
+
+// kauan n fala
+
+    try {
+        const increasedProducts = await prisma.product.update({
+            where: {
+                productId: productData.productName,
+            },
+            data:{
+                amount: productData.amountAdded
+            }
+        })
+        res.status(200).send({clientMessage:`Produto ${productData.name} 
+        atualizado para quantidade ${productData.amountAdded}`}, 
+        serverMessage({increasedProducts}))
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
+module.exports.createProduct = async (req, res) => {
     const productData = {
         productId: uuid.v4(),
         name: req.body.name,
@@ -13,6 +39,7 @@ module.exports.insertProduct = async (req, res) => {
         price: req.body.price,
         picture: req.body.picture || null
     }
+
 
     const insertProductValidation = validateProduct(productData)
     
