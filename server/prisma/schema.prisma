@@ -8,34 +8,54 @@ datasource db {
 }
 
 model User {
-  userId     String  @id
+  userId     String     @id
   firstName  String
   middleName String?
   lastName   String
-  email      String  @unique
+  email      String     @unique
   password   String
-  userStatus Int     @default(1)
+  userStatus Int        @default(1)
   carts      Cart[]
+  Purchase   Purchase[]
 }
 
 model Product {
-  productId   String  @id
-  name        String
-  category    String
-  description String?
-  price       Decimal @db.Decimal(9, 2)
-  picture     String?
-  amount      Int? @default(0)
-  carts       Cart[]
+  productId    String        @id
+  name         String
+  category     String
+  description  String?
+  price        Decimal       @db.Decimal(9, 2)
+  picture      String?
+  amount       Int?          @default(0)
+  cartProducts CartProduct[]
 }
 
 model Cart {
-  cartId String   @id
-  date   DateTime @default(now())
-  amount Int
+  cartId     String  @id
+  totalValue Decimal @db.Decimal(9, 2)
 
-  Product          Product? @relation(fields: [productProductId], references: [productId])
-  productProductId String?
-  User             User?    @relation(fields: [userUserId], references: [userId])
-  userUserId       String?
+  User         User          @relation(fields: [userId], references: [userId])
+  userId       String
+  purchase     Purchase?
+  cartProducts CartProduct[]
+}
+
+model CartProduct {
+  cartProductId String @id
+  amount        Int
+
+  Product   Product @relation(fields: [productId], references: [productId])
+  productId String
+  Cart      Cart    @relation(fields: [cartId], references: [cartId])
+  cartId    String
+}
+
+model Purchase {
+  purchaseId String   @id
+  date       DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [userId])
+  userId String
+  cart   Cart   @relation(fields: [cardId], references: [cartId])
+  cardId String @unique
 }
