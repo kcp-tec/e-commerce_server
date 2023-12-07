@@ -90,7 +90,9 @@ const attCartTotalValue = async (cartId, product) => {
                 cartId: cartId
             },
             data: {
-                totalValue: (product.amount * product.price)
+                totalValue: {
+                    increment: (product.amount * product.price)
+                }
             }
         })
     } catch (e) {
