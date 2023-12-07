@@ -12,9 +12,11 @@ router.get('/findUserById/:userId', (req, res) => userController.findUserById(re
 router.put('/blockUser', (req, res) => userController.blockUser(req, res))
 
 // Products
+router.post('/decreaseProduct', (req, res) => productController.decreaseProduct(req, res))
 router.post('/createProduct', (req, res) => productController.createProduct(req, res))
 router.post(`/insertProduct`, (req, res) => productController.insertProduct(req, res))
 router.get('/findProductByField/:field/:value', (req, res) => productController.findProductByField(req, res))
+router.post('/deleteProduct',(req, res) => productController.deleteProduct(req, res))
 
 // Carts
 router.post('/insertProductToCart', (req, res) => cartController.insertProductToCart(req, res))
