@@ -20,26 +20,34 @@ model User {
 }
 
 model Product {
-  productId   String  @id
-  name        String
-  category    String
-  description String?
-  price       Decimal @db.Decimal(9, 2)
-  picture     String?
-  amount      Int?    @default(0)
-  carts       Cart[]
+  productId    String        @id
+  name         String
+  category     String
+  description  String?
+  price        Decimal       @db.Decimal(9, 2)
+  picture      String?
+  amount       Int?          @default(0)
+  cartProducts CartProduct[]
 }
 
 model Cart {
   cartId     String  @id
-  amount     Int
   totalValue Decimal @db.Decimal(9, 2)
 
-  Product   Product   @relation(fields: [productId], references: [productId])
-  productId String
-  User      User      @relation(fields: [userId], references: [userId])
-  userId    String
-  purchase  Purchase?
+  User         User          @relation(fields: [userId], references: [userId])
+  userId       String
+  purchase     Purchase?
+  cartProducts CartProduct[]
+}
+
+model CartProduct {
+  cartProductId String @id
+  amount        Int
+
+  Product          Product? @relation(fields: [productProductId], references: [productId])
+  productProductId String?
+  Cart             Cart?    @relation(fields: [cartCartId], references: [cartId])
+  cartCartId       String?
 }
 
 model Purchase {
