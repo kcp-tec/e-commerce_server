@@ -5,21 +5,22 @@ const checkers = require('../utils/checkers')
 const errors = require('../utils/errors')
 
 module.exports.insertProductToCart = async (req, res) => {
-    let userCart = await findUserCart(req.params.userId)
-
-    if (!userCart) {
-        userCart = await createCart(req.params.userId, req.params.productId, req.params.amount)
-    }
-
-    const product = await prisma.product.findUnique({
-        where: {
-            productId: req.params.productId
-        }
-    })
-
     try {
-        await prisma.productCart.create({
+        let userCart = await findUserCart(req.body.userId)
+
+        if (!userCart) {
+            userCart = await createCart(req.body.userId)
+        }
+
+        const product = await prisma.product.findUnique({
+            where: {
+                productId: req.body.productId
+            }
+        })
+
+        await prisma.CartProduct.create({
             data: {
+                cartProductId: uuid.v4(),
                 amount: req.body.amount,
                 productId: req.body.productId,
                 cartId: userCart.cartId
@@ -30,6 +31,7 @@ module.exports.insertProductToCart = async (req, res) => {
 
         res.status(200).send({ clientMessage: 'Produto adicionado ao carrinho' })
     } catch (e) {
+        console.log(e);
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
@@ -66,7 +68,7 @@ const findUserCart = async userId => {
     }
 }
 
-const createCart = async (userId, productId, amount) => {
+const createCart = async (userId) => {
     try {
         const newCart = await prisma.cart.create({
             data: {
