@@ -21,7 +21,7 @@ model User {
 
 model Product {
   productId    String        @id
-  name         String
+  name         String        @unique
   category     String
   description  String?
   price        Decimal       @db.Decimal(9, 2)
