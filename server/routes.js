@@ -11,8 +11,9 @@ router.get('/findUserById/:userId', (req, res) => userController.findUserById(re
 router.put('/blockUser', (req, res) => userController.blockUser(req, res))
 
 // Products
-router.post('/insertProduct', (req, res) => productController.insertProduct(req, res))
+router.post('/creayeProduct', (req, res) => productController.createProduct(req, res))
 router.get('/findProductByField/:field/:value', (req, res) => productController.findProductByField(req, res))
+router.post(`/insertProduct`, (req, res) => productController.insertProduct(req,res))
 
 // Carts
 router.post('/insertCart', (req, res) => cartController.insertCart(req, res))
