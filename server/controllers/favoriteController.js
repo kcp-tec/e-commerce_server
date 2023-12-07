@@ -19,3 +19,18 @@ module.exports.favoriteProduct = async (req, res) => {
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
 }
+
+module.exports.listFavoritesByUser = async (req, res) => {
+    try {
+        const favorites = await prisma.favorite.findMany({
+            where: {
+                userId: req.params.userId
+            }
+        })
+
+        res.status(200).send(favorites)
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}

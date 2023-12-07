@@ -13,8 +13,8 @@ router.put('/blockUser', (req, res) => userController.blockUser(req, res))
 
 // Products
 router.post('/createProduct', (req, res) => productController.createProduct(req, res))
-router.get('/findProductByField/:field/:value', (req, res) => productController.findProductByField(req, res))
 router.post(`/insertProduct`, (req, res) => productController.insertProduct(req, res))
+router.get('/findProductByField/:field/:value', (req, res) => productController.findProductByField(req, res))
 
 // Carts
 router.post('/insertProductToCart', (req, res) => cartController.insertProductToCart(req, res))
@@ -22,4 +22,5 @@ router.get('/findCartByUser/:userId', (req, res) => cartController.findCartByUse
 
 // Favorites
 router.post('/favoriteProduct', (req, res) => favoriteController.favoriteProduct(req, res))
+router.get('/listFavoritesByUser/:userId', (req, res) => favoriteController.listFavoritesByUser(req, res))
 module.exports = router
