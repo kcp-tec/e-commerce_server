@@ -44,10 +44,10 @@ model CartProduct {
   cartProductId String @id
   amount        Int
 
-  Product          Product? @relation(fields: [productProductId], references: [productId])
-  productProductId String?
-  Cart             Cart?    @relation(fields: [cartCartId], references: [cartId])
-  cartCartId       String?
+  Product   Product @relation(fields: [productId], references: [productId])
+  productId String
+  Cart      Cart    @relation(fields: [cartId], references: [cartId])
+  cartId    String
 }
 
 model Purchase {

@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 const checkers = require('../utils/checkers')
 const errors = require('../utils/errors')
 
-module.exports.insertCart = async (req, res) => {
+module.exports.insertProductToCart = async (req, res) => {
     try {
         const product = await prisma.product.findUnique({
             where: {
@@ -12,15 +12,19 @@ module.exports.insertCart = async (req, res) => {
             }
         })
 
-        await prisma.cart.create({
+        const newCart = await prisma.cart.create({
             data: {
                 cartId: uuid.v4(),
-                amount: req.body.amount,
-                productId: req.body.productId,
-                userId: req.body.userId,
-                totalValue: (product.price * req.body.amount)
+                userId: req.body.userId
             }
         })
+
+        await prisma.productCart.create({
+            data: {
+                amount: req.body.amount
+            }
+        })
+
 
         res.status(200).send({ clientMessage: 'Carrinho cadastrado' })
     } catch (e) {
