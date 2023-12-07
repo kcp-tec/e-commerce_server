@@ -1,6 +1,7 @@
 const userController = require('./controllers/userController')
 const productController = require('./controllers/productController')
 const cartController = require('./controllers/cartController')
+const favoriteController = require('./controllers/favoriteController')
 const express = require('express')
 const router = express.Router()
 
@@ -13,9 +14,12 @@ router.put('/blockUser', (req, res) => userController.blockUser(req, res))
 // Products
 router.post('/creayeProduct', (req, res) => productController.createProduct(req, res))
 router.get('/findProductByField/:field/:value', (req, res) => productController.findProductByField(req, res))
-router.post(`/insertProduct`, (req, res) => productController.insertProduct(req,res))
+router.post(`/insertProduct`, (req, res) => productController.insertProduct(req, res))
 
 // Carts
 router.post('/insertProductToCart', (req, res) => cartController.insertProductToCart(req, res))
 router.get('/findCartByUser/:userId', (req, res) => cartController.findCartByUser(req, res))
+
+// Favorites
+router.post('/favoriteProduct', (req, res) => favoriteController.favoriteProduct(req, res))
 module.exports = router
