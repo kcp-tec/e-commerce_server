@@ -16,5 +16,5 @@ router.get('/findProductByField/:field/:value', (req, res) => productController.
 
 // Carts
 router.post('/insertProductToCart', (req, res) => cartController.insertProductToCart(req, res))
-router.get('/findCartsByUser/:userId', (req, res) => cartController.findCartsByUser(req, res))
+router.get('/findCartByUser/:userId', (req, res) => cartController.findCartByUser(req, res))
 module.exports = router
