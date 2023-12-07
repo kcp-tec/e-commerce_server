@@ -15,15 +15,15 @@ module.exports.insertProduct= async (req, res) => {
     try {
         const increasedProducts = await prisma.product.update({
             where: {
-                productId: productData.productName,
+                name: productData.productName,
             },
             data:{
-                amount: productData.amountAdded
+                amount: {
+                    increment:(productData.amountAdded)
+                }
             }
         })
-        res.status(200).send({clientMessage:`Produto ${productData.name} 
-        atualizado para quantidade ${productData.amountAdded}`}, 
-        serverMessage({increasedProducts}))
+        res.status(200).send({clientMessage:`Produto ${productData.productName} atualizado para quantidade ${productData.amountAdded}`})
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
