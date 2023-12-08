@@ -19,6 +19,7 @@ model User {
   purchases      Purchase[]
   favorites      Favorite[]
   ProductComment ProductComment[]
+  CommentLike    CommentLike[]
 }
 
 model Product {
@@ -27,11 +28,19 @@ model Product {
   category       String
   description    String?
   price          Decimal          @db.Decimal(9, 2)
-  picture        String?
   amount         Int?             @default(0)
   cartProducts   CartProduct[]
   favorites      Favorite[]
   ProductComment ProductComment[]
+  ProductPic     ProductPic[]
+}
+
+model ProductPic {
+  productPicId String @id
+  productPic   String
+
+  product   Product @relation(fields: [productId], references: [productId])
+  productId String
 }
 
 model Cart {
@@ -74,10 +83,32 @@ model Favorite {
 }
 
 model ProductComment {
-  productCommentId String @id
+  productCommentId String   @id
+  comment          String?  @db.VarChar(255)
+  date             DateTime @default(now())
+  stars            Int
 
-  product   Product @relation(fields: [productId], references: [productId])
-  productId String
-  user      User    @relation(fields: [userId], references: [userId])
-  userId    String
+  product     Product       @relation(fields: [productId], references: [productId])
+  productId   String
+  user        User          @relation(fields: [userId], references: [userId])
+  userId      String
+  CommentPic  CommentPic[]
+  CommentLike CommentLike[]
+}
+
+model CommentPic {
+  commentPicId String  @id
+  picture      String?
+
+  productComment   ProductComment @relation(fields: [productCommentId], references: [productCommentId])
+  productCommentId String
+}
+
+model CommentLike {
+  commentLikeId String @id
+
+  user             User           @relation(fields: [userId], references: [userId])
+  userId           String
+  productComment   ProductComment @relation(fields: [productCommentId], references: [productCommentId])
+  productCommentId String
 }
