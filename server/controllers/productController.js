@@ -78,8 +78,7 @@ module.exports.createProduct = async (req, res) => {
         name: req.body.name,
         category: req.body.category,
         description: req.body.description || null,
-        price: req.body.price,
-        picture: req.body.picture || null
+        price: req.body.price
     }
 
     const insertProductValidation = validateProduct(productData)
@@ -97,8 +96,7 @@ module.exports.createProduct = async (req, res) => {
                 name: productData.name,
                 category: productData.category,
                 description: productData.description,
-                price: productData.price,
-                picture: productData.picture
+                price: productData.price
             }
         })
 

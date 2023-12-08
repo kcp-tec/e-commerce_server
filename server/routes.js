@@ -3,6 +3,7 @@ const productController = require('./controllers/productController')
 const cartController = require('./controllers/cartController')
 const favoriteController = require('./controllers/favoriteController')
 const emailController = require('./controllers/emailController')
+const productCommentController = require('./controllers/productCommentController')
 const express = require('express')
 const router = express.Router()
 
@@ -17,7 +18,7 @@ router.post('/decreaseProduct', (req, res) => productController.decreaseProduct(
 router.post('/createProduct', (req, res) => productController.createProduct(req, res))
 router.post(`/insertProduct`, (req, res) => productController.insertProduct(req, res))
 router.get('/findProductByField/:field/:value', (req, res) => productController.findProductByField(req, res))
-router.post('/deleteProduct',(req, res) => productController.deleteProduct(req, res))
+router.post('/deleteProduct', (req, res) => productController.deleteProduct(req, res))
 
 // Carts
 router.post('/insertProductToCart', (req, res) => cartController.insertProductToCart(req, res))
@@ -29,4 +30,8 @@ router.get('/listFavoritesByUser/:userId', (req, res) => favoriteController.list
 
 // Emails
 router.post('/sendMail', (req, res) => { emailController.sendMail(req, res) })
+
+// ProductComment
+router.post('/insertProductComment', (req, res) => productCommentController.insertProductComment(req, res))
+router.get('/listProductCommentByProductId/:productId', (req, res) => productCommentController.listProductCommentByProductId(req, res))
 module.exports = router
