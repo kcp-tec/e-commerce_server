@@ -144,3 +144,8 @@ const validateProduct = productData => {
         ok: true
     }
 }
+
+// _..__.          .__.._
+// .^"-.._ '-(\__/)-' _..-"^.
+//        '-.' oo '.-'
+//           `-..-'  Pedro       
