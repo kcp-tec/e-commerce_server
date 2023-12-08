@@ -2,6 +2,7 @@ const userController = require('./controllers/userController')
 const productController = require('./controllers/productController')
 const cartController = require('./controllers/cartController')
 const favoriteController = require('./controllers/favoriteController')
+const emailController = require('./controllers/emailController')
 const express = require('express')
 const router = express.Router()
 
@@ -23,4 +24,7 @@ router.get('/findCartByUser/:userId', (req, res) => cartController.findCartByUse
 // Favorites
 router.post('/favoriteProduct', (req, res) => favoriteController.favoriteProduct(req, res))
 router.get('/listFavoritesByUser/:userId', (req, res) => favoriteController.listFavoritesByUser(req, res))
+
+// Emails
+router.post('/sendMail', (req, res) => { emailController.sendMail(req, res) })
 module.exports = router
