@@ -31,7 +31,6 @@ module.exports.favoriteProduct = async (req, res) => {
 
         res.status(200).send({ clientMessage: 'Produto favoritado' })
     } catch (e) {
-        console.log(e)
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }

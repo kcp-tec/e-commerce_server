@@ -1,7 +1,6 @@
 const { PrismaClient } = require('@prisma/client')
 const uuid = require('uuid')
 const prisma = new PrismaClient()
-const checkers = require('../utils/checkers')
 const errors = require('../utils/errors')
 
 module.exports.insertProductToCart = async (req, res) => {
@@ -18,7 +17,7 @@ module.exports.insertProductToCart = async (req, res) => {
             }
         })
 
-        await prisma.CartProduct.create({
+        await prisma.cartProduct.create({
             data: {
                 cartProductId: uuid.v4(),
                 amount: req.body.amount,
