@@ -1,7 +1,6 @@
 const { PrismaClient } = require('@prisma/client')
 const uuid = require('uuid')
 const prisma = new PrismaClient()
-const checkers = require('../utils/checkers')
 const errors = require('../utils/errors')
 
 module.exports.insertProductToCart = async (req, res) => {

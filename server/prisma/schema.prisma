@@ -8,28 +8,30 @@ datasource db {
 }
 
 model User {
-  userId     String     @id
-  firstName  String
-  middleName String?
-  lastName   String
-  email      String     @unique
-  password   String
-  userStatus Int        @default(1)
-  cart       Cart?
-  purchases  Purchase[]
-  favorites  Favorite[]
+  userId         String           @id
+  firstName      String
+  middleName     String?
+  lastName       String
+  email          String           @unique
+  password       String
+  userStatus     Int              @default(1)
+  cart           Cart?
+  purchases      Purchase[]
+  favorites      Favorite[]
+  ProductComment ProductComment[]
 }
 
 model Product {
-  productId    String        @id
-  name         String
-  category     String
-  description  String?
-  price        Decimal       @db.Decimal(9, 2)
-  picture      String?
-  amount       Int?          @default(0)
-  cartProducts CartProduct[]
-  favorites    Favorite[]
+  productId      String           @id
+  name           String
+  category       String
+  description    String?
+  price          Decimal          @db.Decimal(9, 2)
+  picture        String?
+  amount         Int?             @default(0)
+  cartProducts   CartProduct[]
+  favorites      Favorite[]
+  ProductComment ProductComment[]
 }
 
 model Cart {
@@ -68,5 +70,14 @@ model Favorite {
   product   Product @relation(fields: [productId], references: [productId])
   user      User    @relation(fields: [userId], references: [userId])
   productId String
+  userId    String
+}
+
+model ProductComment {
+  productCommentId String @id
+
+  product   Product @relation(fields: [productId], references: [productId])
+  productId String
+  user      User    @relation(fields: [userId], references: [userId])
   userId    String
 }
