@@ -4,6 +4,22 @@ const prisma = new PrismaClient()
 const checkers = require('../utils/checkers')
 const errors = require('../utils/errors')
 
+module.exports.listProductByUserId = async (req, res) => {
+    try {
+        const cartProducts = await prisma.cart.findMany({
+            where: {
+                userId: req.params.userId
+            }
+        })
+        cartProducts
+            ? res.status(200).send(cartProducts)
+            : res.status(404).send({ clientMessage: 'Nenhum produto no carrinho' })
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
 module.exports.insertProductToCart = async (req, res) => {
     try {
         let userCart = await findUserCart(req.body.userId)

@@ -21,6 +21,7 @@ router.post('/deleteProduct',(req, res) => productController.deleteProduct(req, 
 // Carts
 router.post('/insertProductToCart', (req, res) => cartController.insertProductToCart(req, res))
 router.get('/findCartByUser/:userId', (req, res) => cartController.findCartByUser(req, res))
+router.get('/listProductByUserId/:userId', (req, res) => cartController.listProductByUserId(req, res))
 
 // Favorites
 router.post('/favoriteProduct', (req, res) => favoriteController.favoriteProduct(req, res))
