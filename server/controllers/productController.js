@@ -4,6 +4,50 @@ const prisma = new PrismaClient()
 const checkers = require('../utils/checkers')
 const errors = require('../utils/errors')
 
+
+module.exports.deleteProduct = async(req,res) => {
+    const productData = {
+        productName: req.body.productName
+    }
+
+    try {
+        const deletedProduct = await prisma.product.delete({
+            where: {
+                name: productData.productName
+            }
+        })
+        res.status(200).send({clientMessage:`Produto ${productData.productName} deletado`})
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
+// decrementando produto de estoque
+module.exports.decreaseProduct = async(req, res) => {
+    const productData = {
+        productName: req.body.productName,
+        amountDecreased: req.body.amountDecreased
+    }
+    try {
+        const decreasedProducts = await prisma.product.update({
+            where: {
+                name: productData.productName,
+            },
+            data:{
+                amount: {
+                    decrement:(productData.amountDecreased)
+                }
+            }
+        })
+        res.status(200).send({clientMessage:`Produto ${productData.productName} atualizado para quantidade ${decreasedProducts.amount}`})
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
+// Insert de produto
 module.exports.insertProduct= async (req, res) => {
     const productData = {
         productName: req.body.productName,
@@ -30,6 +74,8 @@ module.exports.insertProduct= async (req, res) => {
     }
 }
 
+
+//cadastro de um novo produto
 module.exports.createProduct = async (req, res) => {
     const productData = {
         productId: uuid.v4(),
@@ -68,6 +114,8 @@ module.exports.createProduct = async (req, res) => {
         }
 }
 
+
+//achar um produto pelo campo 
 module.exports.findProductByField = async (req, res) =>{
     try{
         const productFound = await prisma.product.findMany({  
