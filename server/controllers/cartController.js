@@ -17,7 +17,7 @@ module.exports.insertProductToCart = async (req, res) => {
             }
         })
 
-        await prisma.CartProduct.create({
+        await prisma.cartProduct.create({
             data: {
                 cartProductId: uuid.v4(),
                 amount: req.body.amount,
