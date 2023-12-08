@@ -98,3 +98,8 @@ const attCartTotalValue = async (cartId, product) => {
         throw e
     }
 }
+
+//     __
+// ___( o)>
+// \ <_. )
+//  `---'   Kauan

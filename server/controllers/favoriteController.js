@@ -50,3 +50,8 @@ module.exports.listFavoritesByUser = async (req, res) => {
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
 }
+
+//     __
+// ___( o)>
+// \ <_. )
+//  `---'   Kauan
