@@ -3,48 +3,37 @@ const uuid = require('uuid')
 const prisma = new PrismaClient()
 const errors = require('../utils/errors')
 
-module.exports.favoriteProduct = async (req, res) => {
+module.exports.insertProductComment = async (req, res) => {
     try {
-        const favorite = await prisma.favorite.findFirst({
-            where: {
-                AND: [{ productId: req.body.productId }, { userId: req.body.userId }]
-            }
-        })
-
-        if (favorite) {
-            await prisma.favorite.delete({
-                where: {
-                    favoriteId: favorite.favoriteId
-                }
-            })
-
-            return res.status(200).send({ clientMessage: 'Produto desfavoritado' })
-        }
-
-        await prisma.favorite.create({
+        await prisma.productComment.create({
             data: {
-                favoriteId: uuid.v4(),
+                productCommentId: uuid.v4(),
+                comment: req.body.comment || null,
+                stars: req.body.stars,
                 productId: req.body.productId,
                 userId: req.body.userId
             }
         })
 
-        res.status(200).send({ clientMessage: 'Produto favoritado' })
+        res.status(200).send({ clientMessage: 'Comentário enviado' })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
 }
 
-module.exports.listFavoritesByUser = async (req, res) => {
+module.exports.listProductCommentByProductId = async (req, res) => {
     try {
-        const favorites = await prisma.favorite.findMany({
+        const comments = await prisma.productComment.findMany({
             where: {
-                userId: req.params.userId
+                productId: req.params.productId
             }
         })
 
-        res.status(200).send(favorites)
+        comments
+            ? res.status(200).send({ data: comments })
+            : res.status(404).send({ clientMessage: 'Este produto não possui comentários' })
+
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
