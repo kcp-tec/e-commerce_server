@@ -8,13 +8,15 @@ datasource db {
 }
 
 model User {
-  userId         String           @id
-  firstName      String
-  middleName     String?
-  lastName       String
-  email          String           @unique
-  password       String
-  userStatus     Int              @default(1)
+  userId      String  @id
+  firstName   String
+  middleName  String?
+  lastName    String
+  email       String  @unique
+  password    String
+  userStatus  Int     @default(1)
+  accessLevel Int     @default(0)
+
   cart           Cart?
   purchases      Purchase[]
   favorites      Favorite[]
@@ -23,12 +25,13 @@ model User {
 }
 
 model Product {
-  productId      String           @id
-  name           String
-  category       String
-  description    String?
-  price          Decimal          @db.Decimal(9, 2)
-  amount         Int?             @default(0)
+  productId   String  @id
+  name        String
+  category    String
+  description String?
+  price       Decimal @db.Decimal(9, 2)
+  amount      Int?    @default(0)
+
   cartProducts   CartProduct[]
   favorites      Favorite[]
   ProductComment ProductComment[]
@@ -38,17 +41,17 @@ model Product {
 model ProductPic {
   productPicId String @id
   productPic   String
+  productId    String
 
-  product   Product @relation(fields: [productId], references: [productId])
-  productId String
+  product Product @relation(fields: [productId], references: [productId])
 }
 
 model Cart {
   cartId     String   @id
   totalValue Decimal? @db.Decimal(9, 2)
+  userId     String   @unique
 
   User         User          @relation(fields: [userId], references: [userId])
-  userId       String        @unique
   purchase     Purchase?
   cartProducts CartProduct[]
 }
@@ -56,30 +59,30 @@ model Cart {
 model CartProduct {
   cartProductId String @id
   amount        Int
+  productId     String
+  cartId        String
 
-  Product   Product @relation(fields: [productId], references: [productId])
-  productId String
-  Cart      Cart    @relation(fields: [cartId], references: [cartId])
-  cartId    String
+  Product Product @relation(fields: [productId], references: [productId])
+  Cart    Cart    @relation(fields: [cartId], references: [cartId])
 }
 
 model Purchase {
   purchaseId String   @id
   date       DateTime @default(now())
+  userId     String
+  cardId     String   @unique
 
-  user   User   @relation(fields: [userId], references: [userId])
-  userId String
-  cart   Cart   @relation(fields: [cardId], references: [cartId])
-  cardId String @unique
+  user User @relation(fields: [userId], references: [userId])
+  cart Cart @relation(fields: [cardId], references: [cartId])
 }
 
 model Favorite {
   favoriteId String @id
+  productId  String
+  userId     String
 
-  product   Product @relation(fields: [productId], references: [productId])
-  user      User    @relation(fields: [userId], references: [userId])
-  productId String
-  userId    String
+  product Product @relation(fields: [productId], references: [productId])
+  user    User    @relation(fields: [userId], references: [userId])
 }
 
 model ProductComment {
@@ -87,28 +90,28 @@ model ProductComment {
   comment          String?  @db.VarChar(255)
   date             DateTime @default(now())
   stars            Int
+  productId        String
+  userId           String
 
   product     Product       @relation(fields: [productId], references: [productId])
-  productId   String
   user        User          @relation(fields: [userId], references: [userId])
-  userId      String
   CommentPic  CommentPic[]
   CommentLike CommentLike[]
 }
 
 model CommentPic {
-  commentPicId String  @id
-  picture      String?
-
-  productComment   ProductComment @relation(fields: [productCommentId], references: [productCommentId])
+  commentPicId     String  @id
+  picture          String?
   productCommentId String
+
+  productComment ProductComment @relation(fields: [productCommentId], references: [productCommentId])
 }
 
 model CommentLike {
-  commentLikeId String @id
-
-  user             User           @relation(fields: [userId], references: [userId])
+  commentLikeId    String @id
   userId           String
-  productComment   ProductComment @relation(fields: [productCommentId], references: [productCommentId])
   productCommentId String
+
+  user           User           @relation(fields: [userId], references: [userId])
+  productComment ProductComment @relation(fields: [productCommentId], references: [productCommentId])
 }

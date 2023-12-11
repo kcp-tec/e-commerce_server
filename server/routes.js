@@ -13,6 +13,7 @@ router.post('/insertUser', (req, res) => userController.insertUser(req, res))
 router.post('/login', (req, res) => userController.login(req, res))
 router.get('/findUserById/:userId', (req, res) => userController.findUserById(req, res))
 router.put('/blockUser', (req, res) => userController.blockUser(req, res))
+router.put('/updateUserByField', (req, res) => userController.updateUserByField(req, res))
 
 // Products
 router.post('/decreaseProduct', (req, res) => productController.decreaseProduct(req, res))
