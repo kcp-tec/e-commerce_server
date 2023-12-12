@@ -3,6 +3,31 @@ const uuid = require('uuid')
 const prisma = new PrismaClient()
 const errors = require('../utils/errors')
 
+
+module.exports.updateProductByField = async (req, res) => {
+    const productData = {
+        field: req.body.field,
+        value: req.body.value,
+        productId: req.body.productId
+    }
+
+    try {
+        await prisma.product.update({
+            where: {
+                productId: productData.productId
+            },
+            data: {
+                [productData.field]: productData.value
+            }
+        })
+
+        res.status(200).send({clientMessage:`Campo ${productData.field} atualizado para ${productData.value}`})
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
 module.exports.deleteProduct = async (req, res) => {
     const productData = {
         productName: req.body.productName
@@ -144,6 +169,26 @@ const validateProduct = productData => {
         ok: true
     }
 }
+
+module.exports.validateAmount = (productId, amount) => {
+    try {
+
+        const productAmount = prisma.product.findUnique({
+            where:{
+                productId: productId
+            }, 
+            select:{
+                amount: true
+            }
+        })
+        return productAmount.amount>=amount
+
+    } catch (e) {
+        return e
+    }
+ 
+}
+
 
 // _..__.          .__.._
 // .^"-.._ '-(\__/)-' _..-"^.
