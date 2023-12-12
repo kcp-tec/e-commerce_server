@@ -6,9 +6,7 @@ const errors = require('../utils/errors')
 module.exports.listProductByUserId = async (req, res) => {
     try {
         const cartProducts = await prisma.cart.findMany({
-            where: {
-                userId: req.params.userId
-            }
+            where: { userId: req.params.userId }
         })
 
         cartProducts
@@ -34,19 +32,40 @@ module.exports.insertProductToCart = async (req, res) => {
             }
         })
 
-        await prisma.cartProduct.create({
-            data: {
+        const cartProduct = await prisma.cartProduct.findFirst({
+            where: {
+                AND: [
+                    { productId: req.body.productId },
+                    { cartId: userCart.cartId }
+                ]
+            }
+        })
+
+        if (cartProduct) {
+            await prisma.cartProduct.update({
+                where: {
+                    cartProductId: cartProduct.cartProductId
+                },
+                data: {
+                    amount: {
+                        increment: req.body.amount
+                    }
+                }
+            })
+        } else {
+            cartProduct = await prisma.cartProduct.create({
                 cartProductId: uuid.v4(),
                 amount: req.body.amount,
                 productId: req.body.productId,
                 cartId: userCart.cartId
-            }
-        })
+            })
+        }
 
         await attCartTotalValue(userCart.cartId, { price: product.price, amount: req.body.amount })
 
         res.status(200).send({ clientMessage: 'Produto adicionado ao carrinho' })
     } catch (e) {
+        console.log(e)
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
@@ -56,15 +75,11 @@ module.exports.removeProductFromCart = async (req, res) => {
     try {
         const productCartAmount = await prisma.cartProduct.findUnique({
             select: { amount: true },
-            where: {
-                AND: [
-                    { productId: req.body.productId },
-                    { cartId: req.body.cartId }
-                ]
-            }
+            where: { cartProductId: req.body.cartProductId }
         })
 
         console.log(productCartAmount)
+        res.status(200).send({ clientMessage: `Item removido do carrinho` })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
@@ -74,9 +89,7 @@ module.exports.removeProductFromCart = async (req, res) => {
 module.exports.findCartByUser = async (req, res) => {
     try {
         const cartsFound = await prisma.cart.findUnique({
-            where: {
-                userId: req.params.userId
-            }
+            where: { userId: req.params.userId }
         })
 
         cartsFound
@@ -90,7 +103,7 @@ module.exports.findCartByUser = async (req, res) => {
 
 const findUserCart = async userId => {
     try {
-        const userCart = await prisma.cart.findUnique({
+        const userCart = await prisma.cart.findFirst({
             where: {
                 AND: [
                     { userId: userId },
