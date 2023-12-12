@@ -6,40 +6,108 @@ const emailController = require('./controllers/emailController')
 const productCommentController = require('./controllers/productCommentController')
 const commentLikeController = require('./controllers/commentLikeController')
 const express = require('express')
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger-output.json')
+
 const router = express.Router()
 
 // Users
-router.post('/insertUser', (req, res) => userController.insertUser(req, res))
-router.post('/login', (req, res) => userController.login(req, res))
-router.get('/findUserById/:userId', (req, res) => userController.findUserById(req, res))
-router.put('/blockUser', (req, res) => userController.blockUser(req, res))
-router.put('/updateUserByField', (req, res) => userController.updateUserByField(req, res))
+router.post('/insertUser', (req, res) =>
+    // #swagger.tags = ['Users']
+userController.insertUser(req, res))
+
+router.post('/login', (req, res) => 
+    // #swagger.tags = ['Users']
+userController.login(req, res))
+
+router.get('/findUserById/:userId', (req, res) => 
+    // #swagger.tags = ['Users']
+userController.findUserById(req, res))
+
+router.put('/blockUser', (req, res) => 
+     // #swagger.tags = ['Users']
+userController.blockUser(req, res))
+
+router.put('/updateUserByField', (req, res) => 
+    // #swagger.tags = ['Users']
+userController.updateUserByField(req, res))
 
 // Products
-router.post('/decreaseProduct', (req, res) => productController.decreaseProduct(req, res))
-router.post('/createProduct', (req, res) => productController.createProduct(req, res))
-router.post(`/insertProduct`, (req, res) => productController.insertProduct(req, res))
-router.get('/findProductByField/:field/:value', (req, res) => productController.findProductByField(req, res))
-router.post('/deleteProduct', (req, res) => productController.deleteProduct(req, res))
+router.post('/decreaseProduct', (req, res) => 
+    // #swagger.tags = ['Products']
+productController.decreaseProduct(req, res))
+
+router.post('/createProduct', (req, res) =>
+ // #swagger.tags = ['Products']
+productController.createProduct(req, res))
+
+router.post(`/insertProduct`, (req, res) =>
+ // #swagger.tags = ['Products']
+productController.insertProduct(req, res))
+
+router.get('/findProductByField/:field/:value', (req, res) =>
+ // #swagger.tags = ['Products']
+productController.findProductByField(req, res))
+
+router.post('/deleteProduct', (req, res) =>
+ // #swagger.tags = ['Products']
+productController.deleteProduct(req, res))
+
 
 // Carts
-router.post('/insertProductToCart', (req, res) => cartController.insertProductToCart(req, res))
-router.get('/findCartByUser/:userId', (req, res) => cartController.findCartByUser(req, res))
-router.get('/listProductByUserId/:userId', (req, res) => cartController.listProductByUserId(req, res))
+router.post('/insertProductToCart', (req, res) =>
+ // #swagger.tags = ['Carts']
+cartController.insertProductToCart(req, res))
+
+router.get('/findCartByUser/:userId', (req, res) =>
+ // #swagger.tags = ['Carts']
+cartController.findCartByUser(req, res))
+
+router.get('/listProductByUserId/:userId', (req, res) =>
+ // #swagger.tags = ['Carts']
+cartController.listProductByUserId(req, res))
+
 
 // Favorites
-router.post('/favoriteProduct', (req, res) => favoriteController.favoriteProduct(req, res))
-router.get('/listFavoritesByUser/:userId', (req, res) => favoriteController.listFavoritesByUser(req, res))
+router.post('/favoriteProduct', (req, res) =>
+ // #swagger.tags = ['Favorites']
+favoriteController.favoriteProduct(req, res))
+
+router.get('/listFavoritesByUser/:userId', (req, res) =>
+ // #swagger.tags = ['Favorites']
+favoriteController.listFavoritesByUser(req, res))
+
 
 // Emails
-router.post('/sendMail', (req, res) => { emailController.sendMail(req, res) })
-router.get('/verifyToken/:token', (req,res)=>{emailController.verifyToken(req,res)})
+router.post('/sendMail', (req, res) =>
+ // #swagger.tags = ['Emails']
+emailController.sendMail(req, res))
+
+router.get('/verifyToken/:token', (req,res)=>
+ // #swagger.tags = ['Emails']
+emailController.verifyToken(req,res))
 
 // ProductComment
-router.post('/insertProductComment', (req, res) => productCommentController.insertProductComment(req, res))
-router.get('/listProductCommentByProductId/:productId', (req, res) => productCommentController.listProductCommentByProductId(req, res))
+router.post('/insertProductComment', (req, res) =>
+ // #swagger.tags = ['ProductComment']
+productCommentController.insertProductComment(req, res))
+
+router.get('/listProductCommentByProductId/:productId', (req, res) =>
+ // #swagger.tags = ['ProductComment']
+productCommentController.listProductCommentByProductId(req, res))
+
 
 // CommentLikes
-router.post('/insertCommentLike', (req, res) => commentLikeController.insertCommentLike(req, res))
-router.get('/countCommentLikes/:productCommentId', (req, res) => commentLikeController.countCommentLikes(req, res))
+router.post('/insertCommentLike', (req, res) =>
+ // #swagger.tags = ['CommentLikes']
+commentLikeController.insertCommentLike(req, res))
+
+router.get('/countCommentLikes/:productCommentId', (req, res) =>
+ // #swagger.tags = ['CommentLikes']
+commentLikeController.countCommentLikes(req, res))
+
+
+// Swagger 
+router.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
 module.exports = router
