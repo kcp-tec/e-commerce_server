@@ -1,0 +1,118 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  userId      String  @id
+  firstName   String
+  middleName  String?
+  lastName    String
+  email       String  @unique
+  password    String
+  userStatus  Int     @default(1)
+  accessLevel Int     @default(0)
+
+  cart           Cart?
+  purchases      Purchase[]
+  favorites      Favorite[]
+  ProductComment ProductComment[]
+  CommentLike    CommentLike[]
+}
+
+model Product {
+  productId   String  @id
+  name        String
+  category    String
+  description String?
+  price       Decimal @db.Decimal(9, 2)
+  amount      Int?    @default(0)
+
+  cartProducts   CartProduct[]
+  favorites      Favorite[]
+  ProductComment ProductComment[]
+  ProductPic     ProductPic[]
+}
+
+model ProductPic {
+  productPicId String @id
+  productPic   String
+  productId    String
+
+  product Product @relation(fields: [productId], references: [productId])
+}
+
+model Cart {
+  cartId     String   @id
+  totalValue Decimal? @db.Decimal(9, 2)
+  userId     String   @unique
+  cartStatus Int      @default(1)
+
+  User         User          @relation(fields: [userId], references: [userId])
+  purchase     Purchase?
+  cartProducts CartProduct[]
+}
+
+model CartProduct {
+  cartProductId String @id
+  amount        Int
+  productId     String
+  cartId        String
+
+  Product Product @relation(fields: [productId], references: [productId])
+  Cart    Cart    @relation(fields: [cartId], references: [cartId])
+}
+
+model Purchase {
+  purchaseId String   @id
+  date       DateTime @default(now())
+  userId     String
+  cartId     String   @unique
+
+  user User @relation(fields: [userId], references: [userId])
+  cart Cart @relation(fields: [cartId], references: [cartId])
+}
+
+model Favorite {
+  favoriteId String @id
+  productId  String
+  userId     String
+
+  product Product @relation(fields: [productId], references: [productId])
+  user    User    @relation(fields: [userId], references: [userId])
+}
+
+model ProductComment {
+  productCommentId String   @id
+  comment          String?  @db.VarChar(255)
+  date             DateTime @default(now())
+  stars            Int
+  productId        String
+  userId           String
+
+  product     Product       @relation(fields: [productId], references: [productId])
+  user        User          @relation(fields: [userId], references: [userId])
+  CommentPic  CommentPic[]
+  CommentLike CommentLike[]
+}
+
+model CommentPic {
+  commentPicId     String  @id
+  picture          String?
+  productCommentId String
+
+  productComment ProductComment @relation(fields: [productCommentId], references: [productCommentId])
+}
+
+model CommentLike {
+  commentLikeId    String @id
+  userId           String
+  productCommentId String
+
+  user           User           @relation(fields: [userId], references: [userId])
+  productComment ProductComment @relation(fields: [productCommentId], references: [productCommentId])
+}
