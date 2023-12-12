@@ -53,19 +53,20 @@ module.exports.insertProductToCart = async (req, res) => {
                 }
             })
         } else {
-            cartProduct = await prisma.cartProduct.create({
-                cartProductId: uuid.v4(),
-                amount: req.body.amount,
-                productId: req.body.productId,
-                cartId: userCart.cartId
+            await prisma.cartProduct.create({
+                data: {
+                    cartProductId: uuid.v4(),
+                    amount: req.body.amount,
+                    productId: req.body.productId,
+                    cartId: userCart.cartId
+                }
             })
         }
 
-        await attCartTotalValue(userCart.cartId, { price: product.price, amount: req.body.amount })
+        await attCartTotalValue(userCart.cartId)
 
         res.status(200).send({ clientMessage: 'Produto adicionado ao carrinho' })
     } catch (e) {
-        console.log(e)
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
@@ -73,27 +74,44 @@ module.exports.insertProductToCart = async (req, res) => {
 
 module.exports.removeProductFromCart = async (req, res) => {
     try {
-        const productCartAmountAndId = await prisma.cartProduct.findUnique({
-            select: { amount: true, cartProductId: true },
+        const productCart = await prisma.cartProduct.findUnique({
+            select: {
+                Product: {
+                    select: { price: true }
+                },
+                cartProductId: true,
+                amount: true,
+                cartId: true
+            },
             where: { cartProductId: req.body.cartProductId }
         })
 
-        if (!productCartAmountAndId) {
+        if (!productCart) {
             return res.status(400).send({ clientMessage: 'Produto não presente no carrinho' })
         }
-        
-        await prisma.cartProduct.update({
-            where: {
-                cartProductId: productCartAmountAndId.cartProductId
-            },
-            data: {
-                amount: {
-                    decrement: 1
-                }
-            }
-        })
 
-        res.status(200).send({ clientMessage: `Item removido do carrinho` })
+        if (!(productCart.amount > 1)) {
+            await prisma.cartProduct.delete({
+                where: {
+                    cartProductId: productCart.cartProductId
+                }
+            })
+        } else {
+            await prisma.cartProduct.update({
+                where: {
+                    cartProductId: productCart.cartProductId
+                },
+                data: {
+                    amount: {
+                        decrement: 1
+                    }
+                }
+            })
+        }
+
+        await attCartTotalValue(productCart.cartId)
+
+        res.status(200).send({ clientMessage: 'Produto removido do carrinho' })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
@@ -147,16 +165,30 @@ const createCart = async (userId) => {
     }
 }
 
-const attCartTotalValue = async (cartId, product) => {
+const attCartTotalValue = async (cartId) => {
     try {
+        let totalValue = 0
+
+        const productsFromCart = await prisma.cartProduct.findMany({
+            where: { cartId },
+            select: {
+                Product: {
+                    select: { price: true }
+                },
+                amount: true
+            }
+        })
+
+        productsFromCart.forEach(product => {
+            totalValue += Number(product.amount * product.Product.price)
+        })
+
         await prisma.cart.update({
             where: {
                 cartId: cartId
             },
             data: {
-                totalValue: {
-                    increment: (product.amount * product.price)
-                }
+                totalValue
             }
         })
     } catch (e) {
