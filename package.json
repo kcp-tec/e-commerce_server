@@ -4,13 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "cd server && npm run dev"
+    "dev": "cd server && npm run dev -o",
+    "swagger": "cd server && node swagger.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^5.6.0",
+    "swagger-autogen": "^2.23.7",
+    "swagger-ui-express": "^5.0.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
