@@ -10,6 +10,7 @@ module.exports.listProductByUserId = async (req, res) => {
                 userId: req.params.userId
             }
         })
+
         cartProducts
             ? res.status(200).send(cartProducts)
             : res.status(404).send({ clientMessage: 'Nenhum produto no carrinho' })
@@ -52,6 +53,10 @@ module.exports.insertProductToCart = async (req, res) => {
     }
 }
 
+module.exports.removeProductFromCart = async (req, res) => {
+
+}
+
 module.exports.findCartByUser = async (req, res) => {
     try {
         const cartsFound = await prisma.cart.findUnique({
@@ -73,7 +78,10 @@ const findUserCart = async userId => {
     try {
         const userCart = await prisma.cart.findUnique({
             where: {
-                userId: userId
+                AND: [
+                    { userId: userId },
+                    { cartStatus: 1 }
+                ]
             }
         })
 
@@ -108,6 +116,24 @@ const attCartTotalValue = async (cartId, product) => {
                 totalValue: {
                     increment: (product.amount * product.price)
                 }
+            }
+        })
+    } catch (e) {
+        throw e
+    }
+}
+
+module.exports.clearCart = async (cartId) => {
+    try {
+        await prisma.cart.update({
+            where: {
+                AND: [
+                    { cartId: cartId },
+                    { cartStatus: 1 }
+                ]
+            },
+            data: {
+                cartStatus: 0
             }
         })
     } catch (e) {

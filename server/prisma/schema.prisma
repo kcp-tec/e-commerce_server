@@ -50,6 +50,7 @@ model Cart {
   cartId     String   @id
   totalValue Decimal? @db.Decimal(9, 2)
   userId     String   @unique
+  cartStatus Int      @default(1)
 
   User         User          @relation(fields: [userId], references: [userId])
   purchase     Purchase?
@@ -70,10 +71,10 @@ model Purchase {
   purchaseId String   @id
   date       DateTime @default(now())
   userId     String
-  cardId     String   @unique
+  cartId     String   @unique
 
   user User @relation(fields: [userId], references: [userId])
-  cart Cart @relation(fields: [cardId], references: [cartId])
+  cart Cart @relation(fields: [cartId], references: [cartId])
 }
 
 model Favorite {
