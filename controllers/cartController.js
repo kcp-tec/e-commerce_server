@@ -73,12 +73,26 @@ module.exports.insertProductToCart = async (req, res) => {
 
 module.exports.removeProductFromCart = async (req, res) => {
     try {
-        const productCartAmount = await prisma.cartProduct.findUnique({
-            select: { amount: true },
+        const productCartAmountAndId = await prisma.cartProduct.findUnique({
+            select: { amount: true, cartProductId: true },
             where: { cartProductId: req.body.cartProductId }
         })
 
-        console.log(productCartAmount)
+        if (!productCartAmountAndId) {
+            return res.status(400).send({ clientMessage: 'Produto não presente no carrinho' })
+        }
+        
+        await prisma.cartProduct.update({
+            where: {
+                cartProductId: productCartAmountAndId.cartProductId
+            },
+            data: {
+                amount: {
+                    decrement: 1
+                }
+            }
+        })
+
         res.status(200).send({ clientMessage: `Item removido do carrinho` })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
