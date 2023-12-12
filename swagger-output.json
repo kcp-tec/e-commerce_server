@@ -423,10 +423,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "productId": {
-                  "example": "any"
-                },
-                "cartId": {
+                "cartProductId": {
                   "example": "any"
                 }
               }
@@ -434,8 +431,8 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
           }
         }
       }
