@@ -33,6 +33,7 @@ router.get('/listFavoritesByUser/:userId', (req, res) => favoriteController.list
 
 // Emails
 router.post('/sendMail', (req, res) => { emailController.sendMail(req, res) })
+router.get('/verifyToken/:token', (req,res)=>{emailController.verifyToken(req,res)})
 
 // ProductComment
 router.post('/insertProductComment', (req, res) => productCommentController.insertProductComment(req, res))
