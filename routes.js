@@ -38,6 +38,10 @@ router.post('/decreaseProduct', (req, res) =>
     // #swagger.tags = ['Products']
     productController.decreaseProduct(req, res))
 
+router.put('/updateByField', (req, res) =>
+    // #swagger.tags = ['Products']
+    productController.updateUserByField(req, res))
+
 router.post('/createProduct', (req, res) =>
     // #swagger.tags = ['Products']
     productController.createProduct(req, res))
