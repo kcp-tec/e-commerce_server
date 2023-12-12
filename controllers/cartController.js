@@ -47,14 +47,28 @@ module.exports.insertProductToCart = async (req, res) => {
 
         res.status(200).send({ clientMessage: 'Produto adicionado ao carrinho' })
     } catch (e) {
-        console.log(e);
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
 }
 
 module.exports.removeProductFromCart = async (req, res) => {
+    try {
+        const productCartAmount = await prisma.cartProduct.findUnique({
+            select: { amount: true },
+            where: {
+                AND: [
+                    { productId: req.body.productId },
+                    { cartId: req.body.cartId }
+                ]
+            }
+        })
 
+        console.log(productCartAmount)
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
 }
 
 module.exports.findCartByUser = async (req, res) => {

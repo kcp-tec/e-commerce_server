@@ -49,14 +49,14 @@ module.exports.decreaseProduct = async (req, res) => {
 
 module.exports.insertProduct = async (req, res) => {
     const productData = {
-        productName: req.body.productName,
+        productId: req.body.productId,
         amountAdded: req.body.amountAdded
     }
 
     try {
         await prisma.product.update({
             where: {
-                name: productData.productName,
+                productId: productData.productId,
             },
             data: {
                 amount: {
@@ -65,7 +65,7 @@ module.exports.insertProduct = async (req, res) => {
             }
         })
 
-        res.status(200).send({ clientMessage: `Produto ${productData.productName} atualizado para quantidade ${productData.amountAdded}` })
+        res.status(200).send({ clientMessage: `Produto recebeu +${productData.amountAdded} em quantidade` })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })

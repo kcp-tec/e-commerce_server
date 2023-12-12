@@ -5,7 +5,7 @@
     "description": "Api",
     "version": "1.0.0"
   },
-  "host": "localhost:3000",
+  "host": "localhost:5000",
   "basePath": "/",
   "schemes": [
     "http"
@@ -255,7 +255,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "productName": {
+                "productId": {
                   "example": "any"
                 },
                 "amountAdded": {
@@ -406,6 +406,36 @@
           },
           "404": {
             "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/removeProductFromCart": {
+      "put": {
+        "tags": [
+          "Carts"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "example": "any"
+                },
+                "cartId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
@@ -580,9 +610,6 @@
     },
     "/api/insertCommentLike": {
       "post": {
-        "tags": [
-          "CommentLikes"
-        ],
         "description": "",
         "parameters": [
           {
@@ -594,7 +621,7 @@
                 "userId": {
                   "example": "any"
                 },
-                "productCommentId": {
+                "cartId": {
                   "example": "any"
                 }
               }

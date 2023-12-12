@@ -68,6 +68,10 @@ router.get('/listProductByUserId/:userId', (req, res) =>
     // #swagger.tags = ['Carts']
     cartController.listProductByUserId(req, res))
 
+router.put('/removeProductFromCart', (req, res) =>
+    // #swagger.tags = ['Carts']
+    cartController.removeProductFromCart(req, res))
+
 
 // Favorites
 router.post('/favoriteProduct', (req, res) =>
