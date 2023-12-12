@@ -2,6 +2,7 @@ const { PrismaClient } = require('@prisma/client')
 const uuid = require('uuid')
 const prisma = new PrismaClient()
 const errors = require('../utils/errors')
+const productController = require('./productController')
 
 module.exports.listProductByUserId = async (req, res) => {
     try {
@@ -20,17 +21,15 @@ module.exports.listProductByUserId = async (req, res) => {
 
 module.exports.insertProductToCart = async (req, res) => {
     try {
+        if (!productController.validateAmount(req.body.productId, req.body.amount)) {
+            return res.status(400).send({ clientMessage: 'Sem quantidade suficiente em estoque' })
+        }
+
         let userCart = await findUserCart(req.body.userId)
 
         if (!userCart) {
             userCart = await createCart(req.body.userId)
         }
-
-        const product = await prisma.product.findUnique({
-            where: {
-                productId: req.body.productId
-            }
-        })
 
         const cartProduct = await prisma.cartProduct.findFirst({
             where: {

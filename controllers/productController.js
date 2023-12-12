@@ -21,7 +21,7 @@ module.exports.updateProductByField = async (req, res) => {
             }
         })
 
-        res.status(200).send({clientMessage:`Campo ${productData.field} atualizado para ${productData.value}`})
+        res.status(200).send({ clientMessage: `Campo ${productData.field} atualizado para ${productData.value}` })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
@@ -170,23 +170,22 @@ const validateProduct = productData => {
     }
 }
 
-module.exports.validateAmount = (productId, amount) => {
+module.exports.validateAmount = async (productId, amount) => {
     try {
-
-        const productAmount = prisma.product.findUnique({
-            where:{
+        const productAmount = await prisma.product.findUnique({
+            where: {
                 productId: productId
-            }, 
-            select:{
+            },
+            select: {
                 amount: true
             }
         })
-        return productAmount.amount>=amount
 
+        return productAmount.amount >= amount
     } catch (e) {
         return e
     }
- 
+
 }
 
 
