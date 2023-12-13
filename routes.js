@@ -34,9 +34,17 @@ router.put('/updateUserByField', (req, res) =>
     userController.updateUserByField(req, res))
 
 // Products
+router.get('/listProductByCategory/:category', (req, res) =>
+    // #swagger.tags = ['Products']
+    productController.listProductByCategory(req, res))
+
 router.post('/decreaseProduct', (req, res) =>
     // #swagger.tags = ['Products']
     productController.decreaseProduct(req, res))
+
+router.put('/updateByField', (req, res) =>
+    // #swagger.tags = ['Products']
+    productController.updateUserByField(req, res))
 
 router.post('/createProduct', (req, res) =>
     // #swagger.tags = ['Products']
@@ -67,6 +75,10 @@ router.get('/findCartByUser/:userId', (req, res) =>
 router.get('/listProductByUserId/:userId', (req, res) =>
     // #swagger.tags = ['Carts']
     cartController.listProductByUserId(req, res))
+
+router.put('/removeProductFromCart', (req, res) =>
+    // #swagger.tags = ['Carts']
+    cartController.removeProductFromCart(req, res))
 
 
 // Favorites
@@ -108,7 +120,7 @@ router.get('/countCommentLikes/:productCommentId', (req, res) =>
     commentLikeController.countCommentLikes(req, res))
 
 // Purchase
-router.post('/insertCommentLike', (req, res) =>
+router.post('/purchase', (req, res) =>
     // #swagget.tags = ['Purchase']
     purchaseController.insertPurchase(req, res))
 

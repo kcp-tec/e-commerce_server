@@ -9,8 +9,7 @@ module.exports.insertPurchase = async (req, res) => {
         await prisma.purchase.create({
             data: {
                 purchaseId: uuid.v4(),
-                userId: req.body.userId,
-                cartId: req.body.cartId 
+                cartId: req.body.cartId
             }
         })
 
