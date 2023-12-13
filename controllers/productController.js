@@ -3,6 +3,29 @@ const uuid = require('uuid')
 const prisma = new PrismaClient()
 const errors = require('../utils/errors')
 
+module.exports.listProductByCategory = async (req, res) => {
+    const productData = {
+        category: req.params.category
+    }
+
+    try {
+
+    const productsFound = await prisma.product.findMany({
+            where: {
+                category: productData.category
+            }
+        })
+
+        productsFound
+        ? res.status(200).send(productsFound)
+        : res.status(404).send({clientMessage:`Nenhum produto da categoria ${productData.category} encontrado`})
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+
+}
+
 
 module.exports.updateProductByField = async (req, res) => {
     const productData = {
