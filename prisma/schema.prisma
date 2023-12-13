@@ -17,8 +17,7 @@ model User {
   userStatus  Int     @default(1)
   accessLevel Int     @default(0)
 
-  cart           Cart?
-  purchases      Purchase[]
+  cart           Cart[]
   favorites      Favorite[]
   ProductComment ProductComment[]
   CommentLike    CommentLike[]
@@ -49,7 +48,7 @@ model ProductPic {
 model Cart {
   cartId     String   @id
   totalValue Decimal? @db.Decimal(9, 2)
-  userId     String   @unique
+  userId     String
   cartStatus Int      @default(1)
 
   User         User          @relation(fields: [userId], references: [userId])
@@ -70,10 +69,8 @@ model CartProduct {
 model Purchase {
   purchaseId String   @id
   date       DateTime @default(now())
-  userId     String
   cartId     String   @unique
 
-  user User @relation(fields: [userId], references: [userId])
   cart Cart @relation(fields: [cartId], references: [cartId])
 }
 

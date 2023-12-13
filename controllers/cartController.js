@@ -31,6 +31,8 @@ module.exports.insertProductToCart = async (req, res) => {
             userCart = await createCart(req.body.userId)
         }
 
+        console.log(userCart);
+
         const cartProduct = await prisma.cartProduct.findFirst({
             where: {
                 AND: [
@@ -149,7 +151,7 @@ const findUserCart = async userId => {
     }
 }
 
-const createCart = async (userId) => {
+const createCart = async userId => {
     try {
         const newCart = await prisma.cart.create({
             data: {
@@ -164,7 +166,7 @@ const createCart = async (userId) => {
     }
 }
 
-const attCartTotalValue = async (cartId) => {
+const attCartTotalValue = async cartId => {
     try {
         let totalValue = 0
 
@@ -184,7 +186,7 @@ const attCartTotalValue = async (cartId) => {
 
         await prisma.cart.update({
             where: {
-                cartId: cartId
+                cartId
             },
             data: {
                 totalValue
@@ -195,15 +197,10 @@ const attCartTotalValue = async (cartId) => {
     }
 }
 
-module.exports.clearCart = async (cartId) => {
+module.exports.clearCart = async cartId => {
     try {
         await prisma.cart.update({
-            where: {
-                AND: [
-                    { cartId: cartId },
-                    { cartStatus: 1 }
-                ]
-            },
+            where: { cartId },
             data: {
                 cartStatus: 0
             }

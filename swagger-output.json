@@ -206,6 +206,19 @@
         }
       }
     },
+    "/api/updateByField": {
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/createProduct": {
       "post": {
         "tags": [
@@ -342,13 +355,13 @@
             "schema": {
               "type": "object",
               "properties": {
-                "userId": {
-                  "example": "any"
-                },
                 "productId": {
                   "example": "any"
                 },
                 "amount": {
+                  "example": "any"
+                },
+                "userId": {
                   "example": "any"
                 }
               }
@@ -358,6 +371,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -433,6 +449,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -607,6 +626,9 @@
     },
     "/api/insertCommentLike": {
       "post": {
+        "tags": [
+          "CommentLikes"
+        ],
         "description": "",
         "parameters": [
           {
@@ -618,7 +640,7 @@
                 "userId": {
                   "example": "any"
                 },
-                "cartId": {
+                "productCommentId": {
                   "example": "any"
                 }
               }
@@ -644,6 +666,30 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/purchase": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cartId": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {

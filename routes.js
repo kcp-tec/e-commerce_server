@@ -116,7 +116,7 @@ router.get('/countCommentLikes/:productCommentId', (req, res) =>
     commentLikeController.countCommentLikes(req, res))
 
 // Purchase
-router.post('/insertCommentLike', (req, res) =>
+router.post('/purchase', (req, res) =>
     // #swagget.tags = ['Purchase']
     purchaseController.insertPurchase(req, res))
 
