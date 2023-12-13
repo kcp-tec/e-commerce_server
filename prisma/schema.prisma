@@ -48,8 +48,8 @@ model ProductPic {
 model Cart {
   cartId     String   @id
   totalValue Decimal? @db.Decimal(9, 2)
-  userId     String
   cartStatus Int      @default(1)
+  userId     String
 
   User         User          @relation(fields: [userId], references: [userId])
   purchase     Purchase?
