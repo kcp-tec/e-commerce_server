@@ -34,6 +34,10 @@ router.put('/updateUserByField', (req, res) =>
     userController.updateUserByField(req, res))
 
 // Products
+router.get('/listProductByCategory/:category', (req, res) =>
+    // #swagger.tags = ['Products']
+    productController.listProductByCategory(req, res))
+
 router.post('/decreaseProduct', (req, res) =>
     // #swagger.tags = ['Products']
     productController.decreaseProduct(req, res))
