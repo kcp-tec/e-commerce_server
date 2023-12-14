@@ -1,5 +1,43 @@
 {
   "swagger": "2.0",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Controle de usuários"
+    },
+    {
+      "name": "Products",
+      "description": "Controle de produtos"
+    },
+    {
+      "name": "Carts",
+      "description": "Controle de carrinhos"
+    },
+    {
+      "name": "Favorites",
+      "description": "Controle de produtos favoritos"
+    },
+    {
+      "name": "Emails",
+      "description": "Controle de e-mails"
+    },
+    {
+      "name": "ProductComments",
+      "description": "Controle de comentários de produtos"
+    },
+    {
+      "name": "CommentLikes",
+      "description": "Controle de likes de comentários"
+    },
+    {
+      "name": "Purchases",
+      "description": "Controle de compras de usuário"
+    },
+    {
+      "name": "Addresses",
+      "description": "Controle de endereços de usuário"
+    }
+  ],
   "info": {
     "title": "E-Commerce",
     "description": "Api",
@@ -16,7 +54,7 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "  Cria um novo usuário \n\n *Create a new user*",
         "parameters": [
           {
             "name": "body",
@@ -25,22 +63,22 @@
               "type": "object",
               "properties": {
                 "firstName": {
-                  "example": "any"
+                  "example": "Melissa"
                 },
                 "middleName": {
-                  "example": "any"
+                  "example": "Rodrigues"
                 },
                 "lastName": {
-                  "example": "any"
+                  "example": "Cavalcante"
                 },
                 "email": {
-                  "example": "any"
+                  "example": "melissa@gmail.com"
                 },
                 "password": {
-                  "example": "any"
+                  "example": "Melissa123@"
                 },
                 "accessLevel": {
-                  "example": "any"
+                  "example": 1
                 }
               }
             }
@@ -49,6 +87,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Primeiro e último nome são obrigatórios / E-mail informado é inválido / A senha não coincide com os padrões requisitados"
+          },
+          "409": {
+            "description": "Registro (**registro**) duplicado"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -591,7 +638,7 @@
     "/api/insertProductComment": {
       "post": {
         "tags": [
-          "ProductComment"
+          "ProductComments"
         ],
         "description": "",
         "parameters": [
@@ -627,7 +674,7 @@
     "/api/listProductCommentByProductId/{productId}": {
       "get": {
         "tags": [
-          "ProductComment"
+          "ProductComments"
         ],
         "description": "",
         "parameters": [
@@ -701,6 +748,9 @@
     },
     "/api/purchase": {
       "post": {
+        "tags": [
+          "Purchases"
+        ],
         "description": "",
         "parameters": [
           {
@@ -726,7 +776,7 @@
     "/api/insertAddress": {
       "post": {
         "tags": [
-          "Address"
+          "Addresses"
         ],
         "description": "",
         "parameters": [
@@ -765,7 +815,7 @@
     "/api/listAddressesByUser/{userId}": {
       "get": {
         "tags": [
-          "Address"
+          "Addresses"
         ],
         "description": "",
         "parameters": [
@@ -777,8 +827,8 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -786,7 +836,7 @@
     "/api/updateAddressByField": {
       "put": {
         "tags": [
-          "Address"
+          "Addresses"
         ],
         "description": "",
         "parameters": [
@@ -810,8 +860,8 @@
           }
         ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
           }
         }
       }
@@ -819,7 +869,7 @@
     "/api/deleteAddress": {
       "delete": {
         "tags": [
-          "Address"
+          "Addresses"
         ],
         "description": "",
         "parameters": [

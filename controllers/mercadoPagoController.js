@@ -2,7 +2,7 @@ module.exports.createPurchase = async ({ products, user, installments }) => {
     const mercadopago = require('mercadopago')
 
     mercadopago.configure({
-        access_token: process.env.MARCADO_PAGO_ACCESS_TOKEN
+        access_token: process.env.MERCADO_PAGO_ACCESS_TOKEN
     })
 
     // product = title, currency_id: 'BRL', picture_url, description, category_id: nome_categoria, quantity, unit_price
