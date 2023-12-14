@@ -6,6 +6,8 @@ const emailController = require('./controllers/emailController')
 const productCommentController = require('./controllers/productCommentController')
 const commentLikeController = require('./controllers/commentLikeController')
 const purchaseController = require('./controllers/purchaseController')
+const addressController = require('./controllers/addressController')
+
 const express = require('express')
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger-output.json')
@@ -123,6 +125,27 @@ router.get('/countCommentLikes/:productCommentId', (req, res) =>
 router.post('/purchase', (req, res) =>
     // #swagget.tags = ['Purchase']
     purchaseController.insertPurchase(req, res))
+
+// Address
+router.post('/insertAddress', (req, res) =>
+    // #swagger.tags = ['Address']
+    addressController.insertAddress(req, res)
+)
+
+router.get('/listAddressesByUser/:userId', (req, res) =>
+    // #swagger.tags = ['Address']
+    addressController.listAddressesByUser(req, res)
+)
+
+router.put('/updateAddressByField', (req, res) =>
+    // #swagger.tags = ['Address']
+    addressController.updateAddressByField(req, res)
+)
+
+router.delete('/deleteAddress', (req, res) =>
+    // #swagger.tags = ['Address']
+    addressController.deleteAddress(req, res)
+)
 
 // Swagger 
 router.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile))
