@@ -13,5 +13,3 @@ app.use('/api', require('./routes'))
 app.listen(process.env.PORT, () => {
     console.log(`NodeJS running at ${process.env.PORT}`)
 })
-
-
