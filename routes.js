@@ -8,6 +8,8 @@ const commentLikeController = require("./controllers/commentLikeController");
 const purchaseController = require("./controllers/purchaseController");
 const productImageController = require("./controllers/productImageController");
 const upload = require("./configUpload/configUpload");
+const addressController = require('./controllers/addressController')
+
 const express = require("express");
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require("./swagger-output.json");
@@ -152,7 +154,26 @@ router.post("/uploadImage", upload.single("pic"), (req, res, file) =>
   productImageController.uploadImage(req, res)
 );
 
-// Swagger
-router.use("/", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+// Address
+router.post('/insertAddress', (req, res) =>
+    // #swagger.tags = ['Address']
+    addressController.insertAddress(req, res)
+)
 
-module.exports = router;
+router.get('/listAddressesByUser/:userId', (req, res) =>
+    // #swagger.tags = ['Address']
+    addressController.listAddressesByUser(req, res)
+)
+
+router.put('/updateAddressByField', (req, res) =>
+    // #swagger.tags = ['Address']
+    addressController.updateAddressByField(req, res)
+)
+
+router.delete('/deleteAddress', (req, res) =>
+    // #swagger.tags = ['Address']
+    addressController.deleteAddress(req, res)
+)
+
+// Swagger 
+router.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile))

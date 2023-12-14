@@ -16,11 +16,24 @@ model User {
   password    String
   userStatus  Int     @default(1)
   accessLevel Int     @default(0)
+  CPF         String? @db.Char(11)
 
-  cart           Cart[]
-  favorites      Favorite[]
-  ProductComment ProductComment[]
-  CommentLike    CommentLike[]
+  cart            Cart[]
+  favorites       Favorite[]
+  ProductComments ProductComment[]
+  CommentLikes    CommentLike[]
+  Addresses       Address[]
+}
+
+model Address {
+  addressId  String @id
+  street     String
+  number     String
+  CEP        String @db.Char(8)
+  complement String
+  userId     String
+
+  User User @relation(fields: [userId], references: [userId])
 }
 
 model Product {

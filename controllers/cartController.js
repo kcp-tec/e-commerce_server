@@ -31,8 +31,6 @@ module.exports.insertProductToCart = async (req, res) => {
             userCart = await createCart(req.body.userId)
         }
 
-        console.log(userCart);
-
         const cartProduct = await prisma.cartProduct.findFirst({
             where: {
                 AND: [
