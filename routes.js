@@ -16,6 +16,7 @@ const swaggerFile = require("./swagger-output.json");
 
 const router = express.Router();
 
+
 // Users
 router.post("/insertUser", (req, res) =>
   // #swagger.tags = ['Users']
@@ -177,3 +178,5 @@ router.delete('/deleteAddress', (req, res) =>
 
 // Swagger 
 router.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
+module.exports = router;
