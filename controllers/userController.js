@@ -113,12 +113,22 @@ module.exports.blockUser = async (req, res) => {
 
 module.exports.updateUserByField = async (req, res) => {
     try {
-        prisma.user.update({
+        const userFound = await prisma.user.findUnique({
             where: {
-                email: req.body.email
+                userId: req.body.userId
+            }
+        })
+
+        if (!userFound) {
+            return res.status(404).send({ clientMessage: 'Usuário não encontrado' })
+        }
+
+        await prisma.user.update({
+            where: {
+                userId: req.body.userId
             },
             data: {
-                [req.body.field]: req.body.valor
+                [req.body.field]: req.body.value
             }
         })
 
