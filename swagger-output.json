@@ -105,7 +105,7 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Localiza usuário por e-mail e senha \n\n *Localize user by e-mail and password*",
         "parameters": [
           {
             "name": "body",
@@ -114,10 +114,10 @@
               "type": "object",
               "properties": {
                 "email": {
-                  "example": "any"
+                  "example": "melissa@gmail.com"
                 },
                 "password": {
-                  "example": "any"
+                  "example": "Melissa123@"
                 }
               }
             }
@@ -128,13 +128,16 @@
             "description": "OK"
           },
           "401": {
-            "description": "Unauthorized"
+            "description": "Senha incorreta"
           },
           "403": {
-            "description": "Forbidden"
+            "description": "Usuário bloqueado"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Usuário não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -144,7 +147,7 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Busca informações sobre usuário por userId \n\n Search user infos by userId",
         "parameters": [
           {
             "name": "userId",
@@ -156,6 +159,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -165,7 +177,37 @@
         "tags": [
           "Users"
         ],
-        "description": "",
+        "description": "Bloqueia um usuário, impossibilitando login \n\n *Blocks user, making login impossible*",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/updateUserByField": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Atualiza dados de usuário por campo e valor \n\n Updates user data by field and value",
         "parameters": [
           {
             "name": "body",
@@ -174,7 +216,13 @@
               "type": "object",
               "properties": {
                 "userId": {
-                  "example": "any"
+                  "example": ""
+                },
+                "field": {
+                  "example": "email"
+                },
+                "value": {
+                  "example": "melissa1@gmail.com"
                 }
               }
             }
@@ -185,40 +233,13 @@
             "description": "OK"
           },
           "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/api/updateUserByField": {
-      "put": {
-        "tags": [
-          "Users"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "schema": {
-              "type": "object",
-              "properties": {
-                "email": {
-                  "example": "any"
-                },
-                "field": {
-                  "example": "any"
-                },
-                "valor": {
-                  "example": "any"
-                }
-              }
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
+            "description": "Usuário não encontrado"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -228,7 +249,7 @@
         "tags": [
           "Products"
         ],
-        "description": "",
+        "description": "Lista produtos por categoria específica \n\n *List product by specific category*",
         "parameters": [
           {
             "name": "category",
@@ -241,8 +262,8 @@
           "200": {
             "description": "OK"
           },
-          "404": {
-            "description": "Not Found"
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -252,7 +273,7 @@
         "tags": [
           "Products"
         ],
-        "description": "",
+        "description": "Diminui quantidade de produto \n\n *Decrease product amount*",
         "parameters": [
           {
             "name": "body",
@@ -261,10 +282,10 @@
               "type": "object",
               "properties": {
                 "productName": {
-                  "example": "any"
+                  "example": "Shampoo"
                 },
                 "amountDecreased": {
-                  "example": "any"
+                  "example": 3
                 }
               }
             }
@@ -273,6 +294,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Sem quantidade de produto suficiente para diminuição"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -282,10 +312,39 @@
         "tags": [
           "Products"
         ],
-        "description": "",
+        "description": "Atualiza dados de produto por campo e valor \n\n *Update product data by field and valor*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "example": ""
+                },
+                "field": {
+                  "example": "name"
+                },
+                "value": {
+                  "example": "Bicicleta"
+                }
+              }
+            }
+          }
+        ],
         "responses": {
-          "default": {
-            "description": ""
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -295,7 +354,7 @@
         "tags": [
           "Products"
         ],
-        "description": "",
+        "description": "Cria um novo produto sem quantidade \n\n *Create a new product, without amount*",
         "parameters": [
           {
             "name": "body",
@@ -304,16 +363,16 @@
               "type": "object",
               "properties": {
                 "name": {
-                  "example": "any"
+                  "example": "Sabonete em barra LaveBem"
                 },
                 "category": {
-                  "example": "any"
+                  "example": "Saúde"
                 },
                 "description": {
-                  "example": "any"
+                  "example": "Sabonete em barra LaveBem com fragância leve"
                 },
                 "price": {
-                  "example": "any"
+                  "example": 6.50
                 }
               }
             }
@@ -322,6 +381,12 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -331,7 +396,7 @@
         "tags": [
           "Products"
         ],
-        "description": "",
+        "description": "Insere quantidade a um produto \n\n *Insert product amount*",
         "parameters": [
           {
             "name": "body",
@@ -352,6 +417,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -361,7 +435,7 @@
         "tags": [
           "Products"
         ],
-        "description": "",
+        "description": "Localiza produto por campo e valor \n\n *Finds product by field and value*",
         "parameters": [
           {
             "name": "field",
@@ -381,7 +455,10 @@
             "description": "OK"
           },
           "404": {
-            "description": "Not Found"
+            "description": "Produto não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -391,7 +468,7 @@
         "tags": [
           "Products"
         ],
-        "description": "",
+        "description": "Deleta um produto \n\n *Deletes a product*",
         "parameters": [
           {
             "name": "body",
@@ -399,8 +476,8 @@
             "schema": {
               "type": "object",
               "properties": {
-                "productName": {
-                  "example": "any"
+                "productId": {
+                  "example": ""
                 }
               }
             }
@@ -409,6 +486,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -418,7 +504,7 @@
         "tags": [
           "Carts"
         ],
-        "description": "",
+        "description": "Insere um produto ao carrinho do usuário \n\n *Inserts product to user cart*",
         "parameters": [
           {
             "name": "body",
@@ -427,13 +513,13 @@
               "type": "object",
               "properties": {
                 "productId": {
-                  "example": "any"
+                  "example": ""
                 },
                 "amount": {
-                  "example": "any"
+                  "example": 2
                 },
                 "userId": {
-                  "example": "any"
+                  "example": ""
                 }
               }
             }
@@ -444,7 +530,10 @@
             "description": "OK"
           },
           "400": {
-            "description": "Bad Request"
+            "description": "Sem quantidade suficiente em estoque"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -454,7 +543,7 @@
         "tags": [
           "Carts"
         ],
-        "description": "",
+        "description": "Localiza carrinho de um usuário \n\n *Finds cart by userId*",
         "parameters": [
           {
             "name": "userId",
@@ -468,31 +557,13 @@
             "description": "OK"
           },
           "404": {
-            "description": "Not Found"
-          }
-        }
-      }
-    },
-    "/api/listProductByUserId/{userId}": {
-      "get": {
-        "tags": [
-          "Carts"
-        ],
-        "description": "",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
+            "description": "Sem carrinhos encontrados"
           },
-          "404": {
-            "description": "Not Found"
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -502,7 +573,7 @@
         "tags": [
           "Carts"
         ],
-        "description": "",
+        "description": "Remove produto de um carrinho \n\n *Removes product from cart*",
         "parameters": [
           {
             "name": "body",
@@ -511,7 +582,7 @@
               "type": "object",
               "properties": {
                 "cartProductId": {
-                  "example": "any"
+                  "example": ""
                 }
               }
             }
@@ -521,8 +592,14 @@
           "200": {
             "description": "OK"
           },
-          "400": {
-            "description": "Bad Request"
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Produto não presente no carrinho"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -532,7 +609,7 @@
         "tags": [
           "Favorites"
         ],
-        "description": "",
+        "description": "Usuario favorita um produto \n\n *User favorites a product*",
         "parameters": [
           {
             "name": "body",
@@ -541,10 +618,10 @@
               "type": "object",
               "properties": {
                 "productId": {
-                  "example": "any"
+                  "example": ""
                 },
                 "userId": {
-                  "example": "any"
+                  "example": ""
                 }
               }
             }
@@ -553,6 +630,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Usuário não encontrado / Produto não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -562,7 +648,7 @@
         "tags": [
           "Favorites"
         ],
-        "description": "",
+        "description": "Lista produtos favoritos por userId \n\n *List favorites products by userId*",
         "parameters": [
           {
             "name": "userId",
@@ -574,6 +660,15 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Sem itens favoritados"
+          },
+          "500": {
+            "description": "Erro de servidor"
           }
         }
       }
@@ -583,7 +678,7 @@
         "tags": [
           "Emails"
         ],
-        "description": "",
+        "description": "Envia e-mail para usuário",
         "parameters": [
           {
             "name": "body",
@@ -592,10 +687,10 @@
               "type": "object",
               "properties": {
                 "userId": {
-                  "example": "any"
+                  "example": ""
                 },
                 "email": {
-                  "example": "any"
+                  "example": ""
                 }
               }
             }
