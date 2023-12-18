@@ -162,6 +162,11 @@ router.post("/purchase", (req, res) =>
 );
 
 // ProductImage
+
+router.get('/getProductImagesByProductId/:productId', (req, res) =>
+  productImageController.getProductImagesByProductId(req, res)
+);
+
 router.post("/uploadImage", upload.single("pic"), (req, res, file) =>
   productImageController.uploadImage(req, res)
 );
