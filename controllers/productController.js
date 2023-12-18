@@ -3,6 +3,50 @@ const uuid = require('uuid')
 const prisma = new PrismaClient()
 const errors = require('../utils/errors')
 
+
+module.exports.ableProduct= async (req, res) => {
+    const productUpdate = {
+        productId: req.body.productId
+    }
+
+    try {
+        await prisma.product.update({
+            where: {
+                productId: productUpdate.productId
+            },
+            data: {
+                productStatus: 1
+            }
+        })
+        res.status(200).send({clientMessage:`Produto desbloqueado`})
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
+module.exports.disableProduct = async (req, res) => {
+    const productUpdate = {
+        productId: req.body.productId
+    }
+
+    try {
+        await prisma.product.update({
+            where: {
+                productId: productUpdate.productId
+            },
+            data:{
+                productStatus: 0
+            }
+        })
+
+        res.status(200).send({clientMessage:`Produto bloqueado`})
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
 module.exports.deleteProductById = async (req, res) => {
 
     const productDelete = {

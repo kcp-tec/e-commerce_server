@@ -46,7 +46,18 @@ router.put("/updateUserByField", (req, res) =>
 // Products
 router.get("/listProductByCategory/:category", (req, res) =>
   // #swagger.tags = ['Products']
-  productController.listProductByCategory(req, res)
+  productController.listProductByCategory(req, res) 
+);
+
+router.put('/ableProduct', (req, res) =>
+
+  productController.ableProduct(req, res)
+);
+
+
+router.put('/disableProduct', (req, res) =>
+
+  productController.disableProduct(req, res)
 );
 
 router.post("/decreaseProduct", (req, res) =>
