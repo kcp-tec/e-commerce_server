@@ -37,17 +37,19 @@ model Address {
 }
 
 model Product {
-  productId   String  @id
+  productId   String  @id 
   name        String
   category    String
   description String?
   price       Decimal @db.Decimal(9, 2)
   amount      Int?    @default(0)
+  productStatus Int @default(1)
 
   cartProducts   CartProduct[]
   favorites      Favorite[]
   ProductComment ProductComment[]
   ProductPic     ProductPic[]
+  
 }
 
 model ProductPic {
@@ -55,7 +57,7 @@ model ProductPic {
   productPic   String
   productId    String
 
-  product Product @relation(fields: [productId], references: [productId])
+  product Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
 }
 
 model Cart {
