@@ -43,7 +43,7 @@ model Product {
   description String?
   price       Decimal @db.Decimal(9, 2)
   amount      Int?    @default(0)
-  productStatus Int @default(1)
+  productStatus Int?   @default(1)
 
   cartProducts   CartProduct[]
   favorites      Favorite[]
@@ -77,7 +77,7 @@ model CartProduct {
   productId     String
   cartId        String
 
-  Product Product @relation(fields: [productId], references: [productId])
+  Product Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
   Cart    Cart    @relation(fields: [cartId], references: [cartId])
 }
 
@@ -94,7 +94,7 @@ model Favorite {
   productId  String
   userId     String
 
-  product Product @relation(fields: [productId], references: [productId])
+  product Product @relation(fields: [productId], references: [productId], onDelete: Cascade)
   user    User    @relation(fields: [userId], references: [userId])
 }
 
@@ -106,7 +106,7 @@ model ProductComment {
   productId        String
   userId           String
 
-  product     Product       @relation(fields: [productId], references: [productId])
+  product     Product       @relation(fields: [productId], references: [productId], onDelete: Cascade)
   user        User          @relation(fields: [userId], references: [userId])
   CommentPic  CommentPic[]
   CommentLike CommentLike[]

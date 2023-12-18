@@ -74,9 +74,9 @@ router.get("/findProductByField/:field/:value", (req, res) =>
   productController.findProductByField(req, res)
 );
 
-router.post("/deleteProduct", (req, res) =>
-  // #swagger.tags = ['Products']
-  productController.deleteProduct(req, res)
+router.post('/deleteProductById', (req, res) => 
+
+  productController.deleteProductById(req, res)
 );
 
 // Carts
