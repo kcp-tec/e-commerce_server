@@ -16,6 +16,7 @@ model User {
   password    String
   userStatus  Int     @default(1)
   accessLevel Int     @default(0)
+  phone       String? @db.Char(11)
   CPF         String? @db.Char(11)
 
   cart            Cart[]
@@ -26,30 +27,30 @@ model User {
 }
 
 model Address {
-  addressId  String @id
-  street     String
-  number     String
-  CEP        String @db.Char(8)
-  complement String
-  userId     String
+  addressId   String  @id
+  street      String
+  number      String
+  CEP         String  @db.Char(8)
+  complement  String
+  mainAddress Boolean @default(false)
+  userId      String
 
   User User @relation(fields: [userId], references: [userId])
 }
 
 model Product {
-  productId   String  @id 
-  name        String
-  category    String
-  description String?
-  price       Decimal @db.Decimal(9, 2)
-  amount      Int?    @default(0)
-  productStatus Int?   @default(1)
+  productId     String  @id
+  name          String
+  category      String
+  description   String?
+  price         Decimal @db.Decimal(9, 2)
+  amount        Int?    @default(0)
+  productStatus Int?    @default(1)
 
   cartProducts   CartProduct[]
   favorites      Favorite[]
   ProductComment ProductComment[]
   ProductPic     ProductPic[]
-  
 }
 
 model ProductPic {

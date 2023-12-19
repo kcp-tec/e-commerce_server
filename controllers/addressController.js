@@ -62,3 +62,21 @@ module.exports.listAddressesByUser = async (req, res) => {
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
 }
+
+module.exports.turnMainAddres = async (req, res) => {
+    try {
+        await prisma.address.update({
+            where: {
+                addressId: req.body.addressId
+            },
+            data: {
+                mainAddress: true
+            }
+        })
+
+        res.status(200).send({ clientMessage: 'Endereço defiinido como principal' })
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}

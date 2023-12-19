@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 const errors = require('../utils/errors')
 
 
-module.exports.ableProduct= async (req, res) => {
+module.exports.ableProduct = async (req, res) => {
     const productUpdate = {
         productId: req.body.productId
     }
@@ -18,7 +18,7 @@ module.exports.ableProduct= async (req, res) => {
                 productStatus: 1
             }
         })
-        res.status(200).send({clientMessage:`Produto desbloqueado`})
+        res.status(200).send({ clientMessage: `Produto desbloqueado` })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
@@ -35,12 +35,12 @@ module.exports.disableProduct = async (req, res) => {
             where: {
                 productId: productUpdate.productId
             },
-            data:{
+            data: {
                 productStatus: 0
             }
         })
 
-        res.status(200).send({clientMessage:`Produto bloqueado`})
+        res.status(200).send({ clientMessage: `Produto bloqueado` })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
@@ -60,7 +60,7 @@ module.exports.deleteProductById = async (req, res) => {
             }
         })
 
-        res.status(200).send({clientMessage:`Produto deletado`})
+        res.status(200).send({ clientMessage: `Produto deletado` })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
@@ -74,15 +74,15 @@ module.exports.listProductByCategory = async (req, res) => {
 
     try {
 
-    const productsFound = await prisma.product.findMany({
+        const productsFound = await prisma.product.findMany({
             where: {
                 category: productData.category
             }
         })
 
         productsFound
-        ? res.status(200).send(productsFound)
-        : res.status(404).send({clientMessage:`Nenhum produto da categoria ${productData.category} encontrado`})
+            ? res.status(200).send(productsFound)
+            : res.status(404).send({ clientMessage: `Nenhum produto da categoria ${productData.category} encontrado` })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
