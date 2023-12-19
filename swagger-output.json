@@ -855,7 +855,10 @@
               "type": "object",
               "properties": {
                 "cartId": {
-                  "example": "any"
+                  "example": ""
+                },
+                "addressId": {
+                  "example": ""
                 }
               }
             }
@@ -882,19 +885,22 @@
               "type": "object",
               "properties": {
                 "street": {
-                  "example": "any"
+                  "example": "Pedro aragonês"
                 },
                 "number": {
-                  "example": "any"
+                  "example": "25A"
                 },
                 "cep": {
-                  "example": "any"
+                  "example": "08461640"
                 },
                 "complement": {
-                  "example": "any"
+                  "example": "Casa amarela"
+                },
+                "city": {
+                  "example": "São Paulo"
                 },
                 "userId": {
-                  "example": "any"
+                  "example": ""
                 }
               }
             }
@@ -976,6 +982,33 @@
               "properties": {
                 "addressId": {
                   "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/turnMainAddress": {
+      "put": {
+        "tags": [
+          "Addresses"
+        ],
+        "description": "Define endereço como endeço principal",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "addressId": {
+                  "example": ""
                 }
               }
             }
