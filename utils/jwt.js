@@ -28,10 +28,7 @@ module.exports.validateToken = (token) =>{
 module.exports.getTokenFromHeader = (headers)=>{
     try {
         var tokenFull = headers["authorization"]
-        var tokenVetor = tokenFull.split(" ")
-        var token = tokenVetor[1]
-        console.log(token);
-        return token
+        return tokenFull
     } catch (error) {
         return "inválido"
     }

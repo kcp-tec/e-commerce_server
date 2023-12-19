@@ -1,5 +1,5 @@
 {
-  "openapi": "3.0.0",
+  "swagger": "2.0",
   "tags": [
     {
       "name": "Users",
@@ -47,7 +47,7 @@
     "description": "Api",
     "version": "1.0.0"
   },
-  "host": "localhost:5000",
+  "host": "localhost:3000",
   "basePath": "/",
   "schemes": [
     "http"
@@ -1122,13 +1122,13 @@
       }
     }
   }, 
-
-  "components": {
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
-      }
+  "securityDefinitions": {
+    "bearerAuth": {
+      "type": "apiKey",
+      "in": "header", 
+      "name": "authorization", 
+      "description": "Token para acesso de endpoints"
     }
   }
+
 }

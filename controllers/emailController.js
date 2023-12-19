@@ -12,9 +12,9 @@ module.exports.sendMail = async (req, res) => {
                 user: process.env.EMAIL_USER,
                 pass: "uunp dkrh ewef obnf"
             }
-        })
+        })  
 
-        const passCode = await utilsGeral.passCodeGenerator(req.body.userId)
+        //  const passCode = await utilsGeral.passCodeGenerator(req.body.userId)
         var token = utilsJwt.generateToken(req.body.userId, req.body.email);
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
