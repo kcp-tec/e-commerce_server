@@ -47,13 +47,8 @@ module.exports.insertUser = async (req, res) => {
     }
 }
 
+
 module.exports.findUserById = async (req, res) => {
-    var headers = req.headers
-    var token = utilsJwt.getTokenFromHeader(headers)
-
-    var validation = utilsJwt.validateToken(token)
-
-    if(validation.statusToken == "ok"){
         try {
             const userFound = await prisma.user.findUnique({
                 where: {
@@ -69,9 +64,7 @@ module.exports.findUserById = async (req, res) => {
             const errorMessage = errors.getErrorMessageAndStatus(e)
             res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
         }
-    }else{
-        res.status(403).send("Token de recuperação inválido")
-    }
+    
 }
 
 module.exports.login = async (req, res) => {
@@ -120,6 +113,7 @@ module.exports.blockUser = async (req, res) => {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
+
 }
 
 module.exports.updateUserByField = async (req, res) => {
@@ -148,6 +142,10 @@ module.exports.updateUserByField = async (req, res) => {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
+
+
+
+    
 }
 
 const validateInsert = userData => {

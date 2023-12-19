@@ -10,6 +10,7 @@ const productImageController = require("./controllers/productImageController");
 const upload = require("./configUpload/configUpload");
 const addressController = require('./controllers/addressController')
 const securityController = require("./controllers/securityController")
+const jwt = require("./utils/jwt")
 
 const express = require("express");
 const swaggerUi = require("swagger-ui-express");
@@ -29,21 +30,30 @@ router.post("/login", (req, res) =>
   userController.login(req, res)
 );
 
-router.get("/findUserById/:userId", (req, res) =>
+router.get("/findUserById/:userId", securityController.validateToken, (req, res) =>{
   // #swagger.tags = ['Users']
-    /* #swagger.security = [{
+  /* 
+  #swagger.security = [{
             "bearerAuth": []
-    }] */
-  userController.findUserById(req, res)
-);
+  }] */
+    userController.findUserById(req, res)
+});
 
-router.put("/blockUser", (req, res) =>
+router.put("/blockUser", securityController.validateToken,(req, res) =>{
   // #swagger.tags = ['Users']
+    /* 
+  #swagger.security = [{
+            "bearerAuth": []
+  }] */
   userController.blockUser(req, res)
-);
+});
 
-router.put("/updateUserByField", (req, res) =>
+router.put("/updateUserByField",  securityController.validateToken,(req, res) =>
   // #swagger.tags = ['Users']
+      /* 
+  #swagger.security = [{
+            "bearerAuth": []
+  }] */
   userController.updateUserByField(req, res)
 );
 
@@ -64,23 +74,39 @@ router.put('/disableProduct', (req, res) =>
   productController.disableProduct(req, res)
 );
 
-router.post("/decreaseProduct", (req, res) =>
+router.post("/decreaseProduct",  securityController.validateToken,(req, res) =>
   // #swagger.tags = ['Products']
+      /* 
+  #swagger.security = [{
+            "bearerAuth": []
+  }] */
   productController.decreaseProduct(req, res)
 );
 
-router.put("/updateByField", (req, res) =>
+router.put("/updateByField",  securityController.validateToken,(req, res) =>
   // #swagger.tags = ['Products']
+      /* 
+  #swagger.security = [{
+            "bearerAuth": []
+  }] */
   productController.updateUserByField(req, res)
 );
 
-router.post("/createProduct", (req, res) =>
+router.post("/createProduct",  securityController.validateToken,(req, res) =>
   // #swagger.tags = ['Products']
+      /* 
+  #swagger.security = [{
+            "bearerAuth": []
+  }] */
   productController.createProduct(req, res)
 );
 
-router.post(`/insertProduct`, (req, res) =>
+router.post(`/insertProduct`,  securityController.validateToken,(req, res) =>
   // #swagger.tags = ['Products']
+      /* 
+  #swagger.security = [{
+            "bearerAuth": []
+  }] */
   productController.insertProduct(req, res)
 );
 
@@ -100,8 +126,12 @@ router.post("/insertProductToCart", (req, res) =>
   cartController.insertProductToCart(req, res)
 );
 
-router.get("/findCartByUser/:userId", (req, res) =>
+router.get("/findCartByUser/:userId",  securityController.validateToken,(req, res) =>
   // #swagger.tags = ['Carts']
+      /* 
+  #swagger.security = [{
+            "bearerAuth": []
+  }] */
   cartController.findCartByUser(req, res)
 );
 
@@ -110,19 +140,31 @@ router.get("/listProductByUserId/:userId", (req, res) =>
   cartController.listProductByUserId(req, res)
 );
 
-router.put("/removeProductFromCart", (req, res) =>
+router.put("/removeProductFromCart",  securityController.validateToken,(req, res) =>
   // #swagger.tags = ['Carts']
+      /* 
+  #swagger.security = [{
+            "bearerAuth": []
+  }] */
   cartController.removeProductFromCart(req, res)
 );
 
 // Favorites
-router.post("/favoriteProduct", (req, res) =>
+router.post("/favoriteProduct",  securityController.validateToken,(req, res) =>
   // #swagger.tags = ['Favorites']
+      /* 
+  #swagger.security = [{
+            "bearerAuth": []
+  }] */
   favoriteController.favoriteProduct(req, res)
 );
 
-router.get("/listFavoritesByUser/:userId", (req, res) =>
+router.get("/listFavoritesByUser/:userId",  securityController.validateToken,(req, res) =>
   // #swagger.tags = ['Favorites']
+      /* 
+  #swagger.security = [{
+            "bearerAuth": []
+  }] */
   favoriteController.listFavoritesByUser(req, res)
 );
 
@@ -203,6 +245,7 @@ router.delete('/deleteAddress', (req, res) =>
 
 // Security
 router.get('/generateToken/:userId/:email/:key', (req, res)=>
+// #swagger.tags = ['Security']
   securityController.generateToken(req,res)
 )
 

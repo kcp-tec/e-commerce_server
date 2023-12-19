@@ -1,5 +1,5 @@
 {
-  "swagger": "2.0",
+  "openapi": "3.0.0",
   "tags": [
     {
       "name": "Users",
@@ -36,6 +36,10 @@
     {
       "name": "Addresses",
       "description": "Controle de endereços de usuário"
+    },
+    {
+      "name": "Security",
+      "description": "Controle de segurança e tokens"
     }
   ],
   "info": {
@@ -169,7 +173,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/blockUser": {
@@ -199,7 +208,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/updateUserByField": {
@@ -241,7 +255,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/listProductByCategory/{category}": {
@@ -304,7 +323,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/updateByField": {
@@ -346,7 +370,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/createProduct": {
@@ -388,7 +417,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/insertProduct": {
@@ -427,7 +461,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/findProductByField/{field}/{value}": {
@@ -496,7 +535,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/insertProductToCart": {
@@ -565,7 +609,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/removeProductFromCart": {
@@ -601,7 +650,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/favoriteProduct": {
@@ -640,7 +694,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/listFavoritesByUser/{userId}": {
@@ -670,7 +729,12 @@
           "500": {
             "description": "Erro de servidor"
           }
-        }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     },
     "/api/sendMail": {
@@ -1019,6 +1083,51 @@
             "description": "OK"
           }
         }
+      }
+    },
+    "/api/generateToken/{userId}/{email}/{key}":{
+      "get":{
+        "tags":[
+          "Security"
+        ],
+        "description": "Gera um token de acordo com userID e email informado do usuário"
+      },
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "email",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "404": {
+          "description": "Usuário não encontrado"
+        },
+        "403": {
+          "description": "Token inválido"
+        },
+        "500": {
+          "description": "Erro de servidor"
+        }
+      }
+    }
+  }, 
+
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
       }
     }
   }
