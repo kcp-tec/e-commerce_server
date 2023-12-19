@@ -12,6 +12,7 @@ module.exports.insertAddress = async (req, res) => {
                 number: req.body.number,
                 CEP: req.body.cep,
                 complement: req.body.complement,
+                city: req.body.city,
                 userId: req.body.userId
             }
         })
@@ -63,8 +64,11 @@ module.exports.listAddressesByUser = async (req, res) => {
     }
 }
 
-module.exports.turnMainAddres = async (req, res) => {
+module.exports.turnMainAddress = async (req, res) => {
     try {
+        const userId = await prisma.address.findUnique({ select: { userId: true }, where: { addressId: req.body.addressId } })
+        await turnAllAddressSecondary(userId.userId)
+
         await prisma.address.update({
             where: {
                 addressId: req.body.addressId
@@ -79,4 +83,13 @@ module.exports.turnMainAddres = async (req, res) => {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
     }
+}
+
+const turnAllAddressSecondary = async userId => {
+    await prisma.address.updateMany({
+        where: { userId },
+        data: {
+            mainAddress: false
+        }
+    })
 }

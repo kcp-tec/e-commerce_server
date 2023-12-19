@@ -28,6 +28,7 @@ model User {
 
 model Address {
   addressId   String  @id
+  city        String
   street      String
   number      String
   CEP         String  @db.Char(8)

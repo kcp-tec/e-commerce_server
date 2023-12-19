@@ -50,7 +50,7 @@ router.put("/updateUserByField", (req, res) =>
 // Products
 router.get("/listProductByCategory/:category", (req, res) =>
   // #swagger.tags = ['Products']
-  productController.listProductByCategory(req, res) 
+  productController.listProductByCategory(req, res)
 );
 
 router.put('/ableProduct', (req, res) =>
@@ -89,8 +89,8 @@ router.get("/findProductByField/:field/:value", (req, res) =>
   productController.findProductByField(req, res)
 );
 
-router.post('/deleteProductById', (req, res) => 
-  // #swagger.tags = ['Products']
+router.post('/deleteProductById', (req, res) =>
+
   productController.deleteProductById(req, res)
 );
 
@@ -177,23 +177,28 @@ router.post("/uploadImage", upload.single("pic"), (req, res, file) =>
 
 // Address
 router.post('/insertAddress', (req, res) =>
-    // #swagger.tags = ['Address']
-    addressController.insertAddress(req, res)
+  // #swagger.tags = ['Address']
+  addressController.insertAddress(req, res)
 )
 
 router.get('/listAddressesByUser/:userId', (req, res) =>
-    // #swagger.tags = ['Address']
-    addressController.listAddressesByUser(req, res)
+  // #swagger.tags = ['Address']
+  addressController.listAddressesByUser(req, res)
 )
 
 router.put('/updateAddressByField', (req, res) =>
-    // #swagger.tags = ['Address']
-    addressController.updateAddressByField(req, res)
+  // #swagger.tags = ['Address']
+  addressController.updateAddressByField(req, res)
+)
+
+router.put('/turnMainAddress', (req, res) =>
+  // #swagger.tags = ['Address']
+  addressController.turnMainAddress(req, res)
 )
 
 router.delete('/deleteAddress', (req, res) =>
-    // #swagger.tags = ['Address']
-    addressController.deleteAddress(req, res)
+  // #swagger.tags = ['Address']
+  addressController.deleteAddress(req, res)
 )
 
 // Security

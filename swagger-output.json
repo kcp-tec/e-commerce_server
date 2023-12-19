@@ -808,7 +808,15 @@
             "in": "path",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "object",
+              "properties": {
+                "cartId": {
+                  "example": ""
+                },
+                "addressId": {
+                  "example": ""
+                }
+              }
             }
           }
         ],
@@ -855,6 +863,35 @@
           "Address"
         ],
         "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "street": {
+                  "example": "Pedro aragonês"
+                },
+                "number": {
+                  "example": "25A"
+                },
+                "cep": {
+                  "example": "08461640"
+                },
+                "complement": {
+                  "example": "Casa amarela"
+                },
+                "city": {
+                  "example": "São Paulo"
+                },
+                "userId": {
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -917,39 +954,26 @@
           "Address"
         ],
         "description": "",
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "addressId": {
-                    "example": "any"
-                  },
-                  "field": {
-                    "example": "any"
-                  },
-                  "value": {
-                    "example": "any"
-                  }
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "addressId": {
+                  "example": "any"
+                },
+                "field": {
+                  "example": "any"
+                },
+                "value": {
+                  "example": "any"
                 }
               }
             }
           }
-        }
-      }
-    },
-    "/api/deleteAddress": {
-      "delete": {
-        "tags": [
-          "Address"
         ],
-        "description": "",
         "responses": {
           "200": {
             "description": "OK"
@@ -1006,6 +1030,33 @@
           },
           "403": {
             "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/api/turnMainAddress": {
+      "put": {
+        "tags": [
+          "Addresses"
+        ],
+        "description": "Define endereço como endeço principal",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "addressId": {
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
           }
         }
       }
