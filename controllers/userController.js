@@ -5,6 +5,8 @@ const checkers = require('../utils/checkers')
 const errors = require('../utils/errors')
 const auth = require('../utils/auth')
 const bcrypt = require('bcrypt')
+const utilsJwt =  require('../utils/jwt')
+
 
 module.exports.insertUser = async (req, res) => {
     const userData = {
@@ -46,20 +48,29 @@ module.exports.insertUser = async (req, res) => {
 }
 
 module.exports.findUserById = async (req, res) => {
-    try {
-        const userFound = await prisma.user.findUnique({
-            where: {
-                userId: req.params.userId
-            }
-        })
+    var headers = req.headers
+    var token = utilsJwt.getTokenFromHeader(headers)
 
-        res.status(200).send({
-            Nome: userFound.firstName,
-            Id: userFound.userId
-        })
-    } catch (e) {
-        const errorMessage = errors.getErrorMessageAndStatus(e)
-        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    var validation = utilsJwt.validateToken(token)
+
+    if(validation.statusToken == "ok"){
+        try {
+            const userFound = await prisma.user.findUnique({
+                where: {
+                    userId: req.params.userId
+                }
+            })
+    
+            res.status(200).send({
+                Nome: userFound.firstName,
+                Id: userFound.userId
+            })
+        } catch (e) {
+            const errorMessage = errors.getErrorMessageAndStatus(e)
+            res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+        }
+    }else{
+        res.status(403).send("Token de recuperação inválido")
     }
 }
 

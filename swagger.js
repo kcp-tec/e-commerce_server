@@ -6,7 +6,15 @@ const doc = {
     title: 'E-Commerce',
     description: 'Api'
   },
-  host: `localhost:${process.env.PORT}`
+  host: `localhost:${process.env.PORT}`,
+  components: {
+    securitySchemes:{
+        bearerAuth: {
+            type: 'http',
+            scheme: 'bearer'
+        }
+    }
+}
 }
 
 const outputFile = './swagger-output.json'

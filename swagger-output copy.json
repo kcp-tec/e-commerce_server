@@ -1,0 +1,992 @@
+{
+  "swagger": "2.0",
+  "tags": [
+    {
+      "name": "Users",
+      "description": "Controle de usuários"
+    },
+    {
+      "name": "Products",
+      "description": "Controle de produtos"
+    },
+    {
+      "name": "Carts",
+      "description": "Controle de carrinhos"
+    },
+    {
+      "name": "Favorites",
+      "description": "Controle de produtos favoritos"
+    },
+    {
+      "name": "Emails",
+      "description": "Controle de e-mails"
+    },
+    {
+      "name": "ProductComments",
+      "description": "Controle de comentários de produtos"
+    },
+    {
+      "name": "CommentLikes",
+      "description": "Controle de likes de comentários"
+    },
+    {
+      "name": "Purchases",
+      "description": "Controle de compras de usuário"
+    },
+    {
+      "name": "Addresses",
+      "description": "Controle de endereços de usuário"
+    }
+  ],
+  "info": {
+    "title": "E-Commerce",
+    "description": "Api",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "schemes": [
+    "http"
+  ],
+  "paths": {
+    "/api/insertUser": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "  Cria um novo usuário \n\n *Create a new user*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "firstName": {
+                  "example": "Melissa"
+                },
+                "middleName": {
+                  "example": "Rodrigues"
+                },
+                "lastName": {
+                  "example": "Cavalcante"
+                },
+                "email": {
+                  "example": "melissa@gmail.com"
+                },
+                "password": {
+                  "example": "Melissa123@"
+                },
+                "accessLevel": {
+                  "example": 1
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Primeiro e último nome são obrigatórios / E-mail informado é inválido / A senha não coincide com os padrões requisitados"
+          },
+          "409": {
+            "description": "Registro (**registro**) duplicado"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/login": {
+      "post": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Localiza usuário por e-mail e senha \n\n *Localize user by e-mail and password*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "melissa@gmail.com"
+                },
+                "password": {
+                  "example": "Melissa123@"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Senha incorreta"
+          },
+          "403": {
+            "description": "Usuário bloqueado"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/findUserById/{userId}": {
+      "get": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Busca informações sobre usuário por userId \n\n Search user infos by userId",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/blockUser": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Bloqueia um usuário, impossibilitando login \n\n *Blocks user, making login impossible*",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/updateUserByField": {
+      "put": {
+        "tags": [
+          "Users"
+        ],
+        "description": "Atualiza dados de usuário por campo e valor \n\n Updates user data by field and value",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "example": ""
+                },
+                "field": {
+                  "example": "email"
+                },
+                "value": {
+                  "example": "melissa1@gmail.com"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Usuário não encontrado"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/listProductByCategory/{category}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Lista produtos por categoria específica \n\n *List product by specific category*",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/decreaseProduct": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Diminui quantidade de produto \n\n *Decrease product amount*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productName": {
+                  "example": "Shampoo"
+                },
+                "amountDecreased": {
+                  "example": 3
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Sem quantidade de produto suficiente para diminuição"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/updateByField": {
+      "put": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Atualiza dados de produto por campo e valor \n\n *Update product data by field and valor*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "example": ""
+                },
+                "field": {
+                  "example": "name"
+                },
+                "value": {
+                  "example": "Bicicleta"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/createProduct": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Cria um novo produto sem quantidade \n\n *Create a new product, without amount*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "example": "Sabonete em barra LaveBem"
+                },
+                "category": {
+                  "example": "Saúde"
+                },
+                "description": {
+                  "example": "Sabonete em barra LaveBem com fragância leve"
+                },
+                "price": {
+                  "example": 6.50
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/insertProduct": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Insere quantidade a um produto \n\n *Insert product amount*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "example": "any"
+                },
+                "amountAdded": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/findProductByField/{field}/{value}": {
+      "get": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Localiza produto por campo e valor \n\n *Finds product by field and value*",
+        "parameters": [
+          {
+            "name": "field",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "value",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/deleteProduct": {
+      "post": {
+        "tags": [
+          "Products"
+        ],
+        "description": "Deleta um produto \n\n *Deletes a product*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/insertProductToCart": {
+      "post": {
+        "tags": [
+          "Carts"
+        ],
+        "description": "Insere um produto ao carrinho do usuário \n\n *Inserts product to user cart*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "example": ""
+                },
+                "amount": {
+                  "example": 2
+                },
+                "userId": {
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Sem quantidade suficiente em estoque"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/findCartByUser/{userId}": {
+      "get": {
+        "tags": [
+          "Carts"
+        ],
+        "description": "Localiza carrinho de um usuário \n\n *Finds cart by userId*",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Sem carrinhos encontrados"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/removeProductFromCart": {
+      "put": {
+        "tags": [
+          "Carts"
+        ],
+        "description": "Remove produto de um carrinho \n\n *Removes product from cart*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cartProductId": {
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Produto não presente no carrinho"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/favoriteProduct": {
+      "post": {
+        "tags": [
+          "Favorites"
+        ],
+        "description": "Usuario favorita um produto \n\n *User favorites a product*",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "example": ""
+                },
+                "userId": {
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Usuário não encontrado / Produto não encontrado"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/listFavoritesByUser/{userId}": {
+      "get": {
+        "tags": [
+          "Favorites"
+        ],
+        "description": "Lista produtos favoritos por userId \n\n *List favorites products by userId*",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "403": {
+            "description": "Token inválido"
+          },
+          "404": {
+            "description": "Sem itens favoritados"
+          },
+          "500": {
+            "description": "Erro de servidor"
+          }
+        }
+      }
+    },
+    "/api/sendMail": {
+      "post": {
+        "tags": [
+          "Emails"
+        ],
+        "description": "Envia e-mail para usuário",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "example": ""
+                },
+                "email": {
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/verifyToken/{token}": {
+      "get": {
+        "tags": [
+          "Emails"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      }
+    },
+    "/api/insertProductComment": {
+      "post": {
+        "tags": [
+          "ProductComments"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "comment": {
+                  "example": "any"
+                },
+                "stars": {
+                  "example": "any"
+                },
+                "productId": {
+                  "example": "any"
+                },
+                "userId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/listProductCommentByProductId/{productId}": {
+      "get": {
+        "tags": [
+          "ProductComments"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "productId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
+    },
+    "/api/insertCommentLike": {
+      "post": {
+        "tags": [
+          "CommentLikes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "example": "any"
+                },
+                "productCommentId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/countCommentLikes/{productCommentId}": {
+      "get": {
+        "tags": [
+          "CommentLikes"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "productCommentId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/purchase": {
+      "post": {
+        "tags": [
+          "Purchases"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "cartId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/insertAddress": {
+      "post": {
+        "tags": [
+          "Addresses"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "street": {
+                  "example": "any"
+                },
+                "number": {
+                  "example": "any"
+                },
+                "cep": {
+                  "example": "any"
+                },
+                "complement": {
+                  "example": "any"
+                },
+                "userId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/listAddressesByUser/{userId}": {
+      "get": {
+        "tags": [
+          "Addresses"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/updateAddressByField": {
+      "put": {
+        "tags": [
+          "Addresses"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "addressId": {
+                  "example": "any"
+                },
+                "field": {
+                  "example": "any"
+                },
+                "value": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/deleteAddress": {
+      "delete": {
+        "tags": [
+          "Addresses"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "addressId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}

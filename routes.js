@@ -9,6 +9,7 @@ const purchaseController = require("./controllers/purchaseController");
 const productImageController = require("./controllers/productImageController");
 const upload = require("./configUpload/configUpload");
 const addressController = require('./controllers/addressController')
+const securityController = require("./controllers/securityController")
 
 const express = require("express");
 const swaggerUi = require("swagger-ui-express");
@@ -30,6 +31,9 @@ router.post("/login", (req, res) =>
 
 router.get("/findUserById/:userId", (req, res) =>
   // #swagger.tags = ['Users']
+    /* #swagger.security = [{
+            "bearerAuth": []
+    }] */
   userController.findUserById(req, res)
 );
 
@@ -86,7 +90,7 @@ router.get("/findProductByField/:field/:value", (req, res) =>
 );
 
 router.post('/deleteProductById', (req, res) => 
-
+  // #swagger.tags = ['Products']
   productController.deleteProductById(req, res)
 );
 
@@ -190,6 +194,11 @@ router.put('/updateAddressByField', (req, res) =>
 router.delete('/deleteAddress', (req, res) =>
     // #swagger.tags = ['Address']
     addressController.deleteAddress(req, res)
+)
+
+// Security
+router.get('/generateToken/:userId/:email/:key', (req, res)=>
+  securityController.generateToken(req,res)
 )
 
 // Swagger 

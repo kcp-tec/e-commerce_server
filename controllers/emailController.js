@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer')
 const utilsGeral = require('../utils/geral')
-const jwt = require('jsonwebtoken')
+const utilsJwt =  require('../utils/jwt')
 module.exports.sendMail = async (req, res) => {
     try {
         const transporter = nodemailer.createTransport({
@@ -15,17 +15,7 @@ module.exports.sendMail = async (req, res) => {
         })
 
         const passCode = await utilsGeral.passCodeGenerator(req.body.userId)
-       var token = jwt.sign(
-            {
-                data:{
-                    userId: req.body.userId,
-                    email: req.body.email
-                }
-               
-            },
-            process.env.SECRET_JWT_EMAIL, {'expiresIn': '1h'}
-       );
- 
+        var token = utilsJwt.generateToken(req.body.userId, req.body.email);
         await transporter.sendMail({
             from: process.env.EMAIL_USER,
             to: req.body.email,
@@ -52,16 +42,11 @@ module.exports.sendMail = async (req, res) => {
 
 module.exports.verifyToken = async(req,res)=>{
     var token = req.params.token
-    try {
-        var decode = jwt.verify(token,  process.env.SECRET_JWT_EMAIL)
-        res.status(200).json(decode.data)
-    } catch (error) {
-        res.status(400).send("Token de recuperação inválido")
+    var validation = utilsJwt.validateToken(token)
+
+    if(validation.statusToken == "ok"){
+        res.status(200).json(validation.content)
+    }else{
+     res.status(403).send("Token de recuperação inválido")
     }
 }
-//            ((`\      
-//         ___ \\ '--._ 
-//      .'`   `'    o  )
-//     /    \   '. __.' 
-//    _|    /_  \ \_\_  
-//   {_\______\-'\__\_\  leandro
