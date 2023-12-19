@@ -3,6 +3,70 @@ const uuid = require('uuid')
 const prisma = new PrismaClient()
 const errors = require('../utils/errors')
 
+
+module.exports.ableProduct = async (req, res) => {
+    const productUpdate = {
+        productId: req.body.productId
+    }
+
+    try {
+        await prisma.product.update({
+            where: {
+                productId: productUpdate.productId
+            },
+            data: {
+                productStatus: 1
+            }
+        })
+        res.status(200).send({ clientMessage: `Produto desbloqueado` })
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
+module.exports.disableProduct = async (req, res) => {
+    const productUpdate = {
+        productId: req.body.productId
+    }
+
+    try {
+        await prisma.product.update({
+            where: {
+                productId: productUpdate.productId
+            },
+            data: {
+                productStatus: 0
+            }
+        })
+
+        res.status(200).send({ clientMessage: `Produto bloqueado` })
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
+module.exports.deleteProductById = async (req, res) => {
+
+    const productDelete = {
+        productId: req.body.productId
+    }
+
+    try {
+        await prisma.product.delete({
+            where: {
+                productId: productDelete.productId
+            }
+        })
+
+        res.status(200).send({ clientMessage: `Produto deletado` })
+    } catch (e) {
+        const errorMessage = errors.getErrorMessageAndStatus(e)
+        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
+    }
+}
+
 module.exports.listProductByCategory = async (req, res) => {
     const productData = {
         category: req.params.category
@@ -10,15 +74,15 @@ module.exports.listProductByCategory = async (req, res) => {
 
     try {
 
-    const productsFound = await prisma.product.findMany({
+        const productsFound = await prisma.product.findMany({
             where: {
                 category: productData.category
             }
         })
 
         productsFound
-        ? res.status(200).send(productsFound)
-        : res.status(404).send({clientMessage:`Nenhum produto da categoria ${productData.category} encontrado`})
+            ? res.status(200).send(productsFound)
+            : res.status(404).send({ clientMessage: `Nenhum produto da categoria ${productData.category} encontrado` })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
@@ -45,25 +109,6 @@ module.exports.updateProductByField = async (req, res) => {
         })
 
         res.status(200).send({ clientMessage: `Campo ${productData.field} atualizado para ${productData.value}` })
-    } catch (e) {
-        const errorMessage = errors.getErrorMessageAndStatus(e)
-        res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
-    }
-}
-
-module.exports.deleteProduct = async (req, res) => {
-    const productData = {
-        productName: req.body.productName
-    }
-
-    try {
-        await prisma.product.delete({
-            where: {
-                name: productData.productName
-            }
-        })
-
-        res.status(200).send({ clientMessage: `Produto ${productData.productName} deletado` })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
         res.status(errorMessage.status).send({ clientMessage: errorMessage.clientMessage, serverMessage: errorMessage.serverMessage || e })
@@ -126,7 +171,8 @@ module.exports.createProduct = async (req, res) => {
         name: req.body.name,
         category: req.body.category,
         description: req.body.description || null,
-        price: req.body.price
+        price: req.body.price,
+        productStatus: 1
     }
 
     const insertProductValidation = validateProduct(productData)
@@ -144,7 +190,8 @@ module.exports.createProduct = async (req, res) => {
                 name: productData.name,
                 category: productData.category,
                 description: productData.description,
-                price: productData.price
+                price: productData.price,
+                productStatus: productData.productStatus
             }
         })
 

@@ -16,6 +16,7 @@ const swaggerFile = require("./swagger-output.json");
 
 const router = express.Router();
 
+
 // Users
 router.post("/insertUser", (req, res) =>
   // #swagger.tags = ['Users']
@@ -48,6 +49,17 @@ router.get("/listProductByCategory/:category", (req, res) =>
   productController.listProductByCategory(req, res)
 );
 
+router.put('/ableProduct', (req, res) =>
+
+  productController.ableProduct(req, res)
+);
+
+
+router.put('/disableProduct', (req, res) =>
+
+  productController.disableProduct(req, res)
+);
+
 router.post("/decreaseProduct", (req, res) =>
   // #swagger.tags = ['Products']
   productController.decreaseProduct(req, res)
@@ -73,9 +85,9 @@ router.get("/findProductByField/:field/:value", (req, res) =>
   productController.findProductByField(req, res)
 );
 
-router.post("/deleteProduct", (req, res) =>
-  // #swagger.tags = ['Products']
-  productController.deleteProduct(req, res)
+router.post('/deleteProductById', (req, res) =>
+
+  productController.deleteProductById(req, res)
 );
 
 // Carts
@@ -150,30 +162,42 @@ router.post("/purchase", (req, res) =>
 );
 
 // ProductImage
+
+router.get('/getProductImagesByProductId/:productId', (req, res) =>
+  productImageController.getProductImagesByProductId(req, res)
+);
+
 router.post("/uploadImage", upload.single("pic"), (req, res, file) =>
   productImageController.uploadImage(req, res)
 );
 
 // Address
 router.post('/insertAddress', (req, res) =>
-    // #swagger.tags = ['Address']
-    addressController.insertAddress(req, res)
+  // #swagger.tags = ['Address']
+  addressController.insertAddress(req, res)
 )
 
 router.get('/listAddressesByUser/:userId', (req, res) =>
-    // #swagger.tags = ['Address']
-    addressController.listAddressesByUser(req, res)
+  // #swagger.tags = ['Address']
+  addressController.listAddressesByUser(req, res)
 )
 
 router.put('/updateAddressByField', (req, res) =>
-    // #swagger.tags = ['Address']
-    addressController.updateAddressByField(req, res)
+  // #swagger.tags = ['Address']
+  addressController.updateAddressByField(req, res)
+)
+
+router.put('/turnMainAddress', (req, res) =>
+  // #swagger.tags = ['Address']
+  addressController.turnMainAddress(req, res)
 )
 
 router.delete('/deleteAddress', (req, res) =>
-    // #swagger.tags = ['Address']
-    addressController.deleteAddress(req, res)
+  // #swagger.tags = ['Address']
+  addressController.deleteAddress(req, res)
 )
 
 // Swagger 
 router.use('/', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
+module.exports = router;
