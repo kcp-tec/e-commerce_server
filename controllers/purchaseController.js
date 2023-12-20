@@ -32,14 +32,15 @@ const generateMercadoPagoBody = async (cartId, addressId) => {
     const cart = await prisma.cart.findUnique({ where: { cartId } })
 
     return {
+        transaction_amount: Number(cart.totalValue),
         additional_info: {
             items,
             shipments
         },
         payer,
-        payment_method_id: '',
-        transaction_amount: cart.totalValue,
-        installments: 2
+        transaction_amount: Number(cart.totalValue),
+        installments: 2,
+        payment_method_id: 'bolbradesco'
     }
 }
 
@@ -49,7 +50,6 @@ const generateShipmentJson = async addressId => {
     })
 
     return {
-        cost: 0,
         receiver_address: {
             city_name: address.city,
             street_name: address.street,
@@ -84,7 +84,6 @@ const generateItemsJson = async cartId => {
         items.push({
             id: cartProduct.cartProductId,
             title: cartProduct.Product.name,
-            currency_id: 'BRL',
             description: cartProduct.Product.description,
             category_id: cartProduct.Product.category,
             unit_price: cartProduct.Product.price,
@@ -129,24 +128,25 @@ const generatePayerJson = async cartId => {
                 }
             }
         })
-
+        
         return {
             address: {
                 street_name: user.Addresses[0].street,
-                street_number: user.Addresses[0].number,
+                street_number: parseInt(user.Addresses[0].number),
                 zip_code: user.Addresses[0].CEP
             },
             email: user.email,
             first_name: user.firstName,
             last_name: user.lastName,
-            phone: user.phone,
+            phone: {
+                area_code: user.phone.slice(0, 2),
+                number: user.phone.slice(2, 11)
+            },
             identification: {
                 type: 'CPF',
                 number: user.CPF
             },
-            id: user.userId,
-            entity_type: 'individual',
-            type: 'costumer',
+            id: user.userId
         }
     } catch (e) {
         console.log(e)
