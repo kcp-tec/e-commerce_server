@@ -6,7 +6,6 @@ module.exports.generateToken = (userId, email) => {
                 userId: userId,
                 email: email
             }
-           
         },
         process.env.SECRET_JWT_EMAIL, {'expiresIn': '1h'}
    );
@@ -27,11 +26,12 @@ module.exports.validateToken = (token) =>{
     }
 }
 module.exports.getTokenFromHeader = (headers)=>{
-    var tokenFull = headers["authorization"]
-    var tokenVetor = tokenFull.split(" ")
-    var token = tokenVetor[1]
-    console.log(token);
-    return token
+    try {
+        var tokenFull = headers["authorization"]
+        return tokenFull
+    } catch (error) {
+        return "inválido"
+    }
 }
 //            ((`\      
 //         ___ \\ '--._ 

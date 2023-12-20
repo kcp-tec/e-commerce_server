@@ -7,13 +7,13 @@ const doc = {
     description: 'Api'
   },
   host: `localhost:${process.env.PORT}`,
-  components: {
-    securitySchemes:{
-        bearerAuth: {
-            type: 'http',
-            scheme: 'bearer'
-        }
-    }
+  securityDefinitions: {
+    apiKeyAuth: {
+      type: 'apiKey',
+      in: 'header', // can be 'header', 'query' or 'cookie'
+      name: 'authorization', // name of the header, query parameter or cookie
+      description: 'Some description...'
+  }
 }
 }
 
