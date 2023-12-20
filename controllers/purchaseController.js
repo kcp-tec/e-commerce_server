@@ -7,8 +7,8 @@ const mp = require('./mercadoPagoController')
 
 module.exports.insertPurchase = async (req, res) => {
     try {
-        mp.createPayment(await generateMercadoPagoBody(req.body.cartId, req.body.addressId))
-
+        const payment = await mp.createPayment(await generateMercadoPagoBody(req.body.cartId, req.body.addressId))
+        console.log(payment);
         res.status(200).send({ clientMessage: 'Compra realizada com sucesso!' })
     } catch (e) {
         const errorMessage = errors.getErrorMessageAndStatus(e)
@@ -136,6 +136,7 @@ const generatePayerJson = async cartId => {
                 zip_code: user.Addresses[0].CEP
             },
             email: user.email,
+            type: "customer",
             first_name: user.firstName,
             last_name: user.lastName,
             phone: {
@@ -145,8 +146,7 @@ const generatePayerJson = async cartId => {
             identification: {
                 type: 'CPF',
                 number: user.CPF
-            },
-            id: user.userId
+            }
         }
     } catch (e) {
         console.log(e)

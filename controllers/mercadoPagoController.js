@@ -11,11 +11,10 @@ module.exports.createPayment = async body => {
             await createCustomer(body.payer)
             mpCustomer = await searchCustomerByEmail(body.payer.email)
         }
-        console.log(mpCustomer);
 
         return await payment.create({ body })
     } catch (e) {
-        console.log(e)
+      console.log(e)
     }
 }
 
@@ -28,8 +27,7 @@ const searchCustomerByEmail = async email => {
 
 const createCustomer = async payer => {
     try {
-        return await customerClient.update({
-            customerId: 'a7b5c5fc-090e-4c40-a267-35fd2c1a5a78',
+        return await customerClient.create({
             body: {
                 email: payer.email,
                 first_name: payer.first_name,

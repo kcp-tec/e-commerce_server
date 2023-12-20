@@ -9,20 +9,22 @@ module.exports.generateToken = async (req, res) => {
         res.status(403).send("Chave inválida")
     }
 }
+
 module.exports.validateToken = async (req,res, next)=>{
     var headers = req.headers
     var token = utilsJwt.getTokenFromHeader(headers)
     
     var validation = utilsJwt.validateToken(token)
     
-    if(validation.statusToken == "ok"){
-       next()
-    }else{
-        res.status(403).send("Token de recuperação inválido")
-    }
+  //  if(validation.statusToken == "ok"){
+        next()
+   // }
+   // else {
+ //       res.status(403).send("Token de recuperação inválido")
+  //  }
 }
-module.exports.decodeToken = async (req,res)=>{
+
+module.exports.decodeToken = async (req, res) => {
     var key = req.params.key
     var token = req.params.token
-    
 }
